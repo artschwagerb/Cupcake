@@ -1,0 +1,9 @@
+Installation Setup-
+
+/config.php - add username/password/database to the database section
+This file is responsible for database transactions
+
+/include/fg_membersite.php - add username/password/database to the database section
+This file is responsible for authentication
+
+Import the cupcake.sql file into your mysql server.  It should create the database.  You will have to create a username/password that can access it.
