@@ -1,0 +1,14 @@
+<html>
+    <head>
+            <title>Directory Viewer</title>
+	            <style media="all" type="text/css">
+		            body { background:#fff; color:#000; font:1em Arial, Helvetica, sans-serif; }
+			            * { border:0; margin:0; padding:0;}
+				            a { text-decoration:none; }
+					            ul { list-style:none; margin:10px; }
+						            </style>
+							        </head>
+
+								    <body>
+								        <ul><li><a href="actors"><img alt="" src="/icon_folder.gif" /> actors</a></li></ul><ul><li><a href="default"><img alt="" src="/icon_folder.gif" /> default</a></li></ul><ul><li><a href="seasonswide"><img alt="" src="/icon_folder.gif" /> seasonswide</a></li></ul><ul><li><a href="seasons"><img alt="" src="/icon_folder.gif" /> seasons</a></li></ul><ul><li><a href="posters"><img alt="" src="/icon_folder.gif" /> posters</a></li></ul><ul><li><a href="blank"><img alt="" src="/icon_folder.gif" /> blank</a></li></ul><ul></ul><ul><li><a href="topfanart"><img alt="" src="/icon_folder.gif" /> topfanart</a></li></ul><ul><li><a href="fanart"><img alt="" src="/icon_folder.gif" /> fanart</a></li></ul><ul><li><a href="episodes"><img alt="" src="/icon_folder.gif" /> episodes</a></li></ul><ul><li><a href="graphical"><img alt="" src="/icon_folder.gif" /> graphical</a></li></ul><ul><li><a href="text"><img alt="" src="/icon_folder.gif" /> text</a></li></ul>																																        </body>
+																																	</html> 

@@ -1,0 +1,24 @@
+.rating { 
+	position: relative;
+	width: 91px;
+	height: 17px;
+	padding-left: 10px;
+	padding-right: 10px;
+}
+.rating .cover {
+	position: absolute;
+	background: transparent url(images/stars.png) top left no-repeat;
+	top: 0px;
+	left: 0px;
+	width: 91px;
+	height: 17px;
+	z-index: 101;
+}
+.rating .progress {
+	position: absolute;
+	background: transparent url(images/stars_full.png) top left no-repeat;
+	top: 0px;
+	left: 0px;
+	height: 17px;
+	z-index: 102;
+}
