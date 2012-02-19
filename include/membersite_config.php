@@ -7,15 +7,15 @@ $fgmembersite = new FGMembersite();
 $fgmembersite->SetWebsiteName('Cupcake');
 
 //Provide the email address where you want to get notifications
-$fgmembersite->SetAdminEmail('artschwagerb@my.uwstout.edu');
+$fgmembersite->SetAdminEmail('');
 
 //Provide your database login details here:
 //hostname, user name, password, database name and table name
 //note that the script will create the table (for example, users in this case)
 //by itself on submitting register.php for the first time
 $fgmembersite->InitDB(/*hostname*/'localhost',
-                      /*username*/'cup',
-                      /*password*/'HBnzUemAHSqtCprW',
+                      /*username*/'',
+                      /*password*/'',
                       /*database name*/'cupcake',
                       /*table name*/'u_user');
 					  
