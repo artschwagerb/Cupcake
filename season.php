@@ -81,6 +81,14 @@ $season->getEpisodes($fgmembersite->CheckPremium());
 						<?php echo $season->show->network; ?>
 					</div>
 				</div>
+                                <div class="row">
+					<div class="four columns">
+						<b>Rating</b>	
+					</div>
+					<div class="eight columns">
+						<?php echo $season->show->content_rating; ?>
+					</div>
+				</div>
 				<div class="row">
 					<div class="four columns">
 						<b>Genre</b>
