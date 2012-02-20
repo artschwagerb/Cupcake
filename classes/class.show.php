@@ -122,7 +122,7 @@
 			// }
 		// }
 		
-		public function getAllBanners($width="758", $height="140px") {
+		public function getAllBanners() {
 			$dbstuff = new databee();
 			$res = $dbstuff->query("SELECT * FROM v_show ORDER BY name;");
 			if(mysql_num_rows($res) != 0){
@@ -137,7 +137,7 @@
 					?>
 					<div class="row">
 						<div class="twelve columns">
-							<a title="<?php echo $show->name; ?>" href="show.php?id=<?php echo $show->tvdb_series_id; ?>"><img width ="<?php echo $width; ?>" height="<?php echo $height; ?>" src="images/shows/banners/<?php echo $show->tvdb_series_id; ?>.jpg" /></a>
+							<a title="<?php echo $show->name; ?>" href="show.php?id=<?php echo $show->tvdb_series_id; ?>"><img src="images/shows/banners/<?php echo $show->tvdb_series_id; ?>.jpg" /></a>
 						</div>
 					</div>
 					<?php

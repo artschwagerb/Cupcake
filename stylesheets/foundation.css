@@ -81,6 +81,7 @@
 	a { color: #2a85e8; text-decoration: none; line-height: inherit; }
 	a:hover { color: #11639d; }
 	a:focus { color: #cc4714; outline: none; }
+        a.clean { color: #555; text-decoration: none; line-height: inherit; }
 	p a, p a:visited { line-height: inherit; }
 	
 

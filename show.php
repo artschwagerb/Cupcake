@@ -45,7 +45,8 @@ if (!empty($_POST['request-series'])) {
 <?php
 }else{
 $show = new show($_GET["id"]);
-header ('Location:  season.php?id='.$show->getFirstSeason()->tvdb_season_id );
+//header ('Location:  season.php?id='.$show->getFirstSeason()->tvdb_season_id );
+echo '<META HTTP-EQUIV="Refresh" Content="0; URL=season.php?id='.$show->getFirstSeason()->tvdb_season_id.'">';
 exit();
 ?>
 <div class="row">

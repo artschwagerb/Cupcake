@@ -122,7 +122,7 @@ class statistics {
 						</div>
 						<div class="row">
 							<div class="nine columns">		
-								<span style="font-size: 9px; text-decoration: none;"><a href="user.php?id=<?php echo $user->id; ?>"><?php echo ucfirst($user->displayname); ?></a></span>
+								<span style="font-size: 9px; text-decoration: none;"><a class="clean" href="user.php?id=<?php echo $user->id; ?>"><?php echo ucfirst($user->displayname); ?></a></span>
 							</div>
 							<div class="three columns">		
 								<span style="font-size: 9px; "><?php echo date('g:i a', strtotime(TIME_OFFSET, strtotime($row['date_of_play']))); ?></span>

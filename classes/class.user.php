@@ -12,7 +12,7 @@
 		var $status_id;
 		var $last_ip;
 		var $premium_ex_date;
-		
+
 		function __construct($id) {
 			$this->id = $id;
 			
@@ -31,6 +31,7 @@
 					$this->status_id = $row['status_id'];
 					$this->last_ip = $row['last_ip'];
 					$this->premium_ex_date = $row['premium_ex_date'];
+                                        $this->post_count = $this->getPostCount();
 				}
 			}
 			//echo $res;
@@ -133,11 +134,19 @@
 			} 
 			?>
 			</td></tr>
+                        <tr><td width="200px">Comments</td><td><?php echo $this->post_count; ?></td></tr>
 			</table>
 				
 			<?php
 		}
-		
+                
+                function getPostCount(){
+                    $dbstuff = new databee();
+			$res = $dbstuff->query("SELECT id FROM c_comment WHERE user_id=$this->id;");
+			return mysql_num_rows($res);
+				
+                }
+
 		/* public function getStatusTitle() {
 		switch ($this->active) {
 			case 0:
