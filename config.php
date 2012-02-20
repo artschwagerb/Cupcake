@@ -19,4 +19,5 @@ require( CLASS_PATH . "/class.show.php" );
 require( CLASS_PATH . "/class.movie.php" );
 require( CLASS_PATH . "/class.statistics.php" );
 require( CLASS_PATH . "/class.comment.php" );
+require( CLASS_PATH . "/class.topic.php" );
 ?>
