@@ -69,6 +69,21 @@
      });
 </script>
 
+<script type="text/javascript">
+$(document).ready(function() { 
+
+	$("span.spoiler").hide();
+
+	 $('<a class="label red">Reveal Spoiler</a> ').insertBefore('.spoiler');
+
+	$("a.label.red").click(function(){
+		$(this).parents("p").children("span.spoiler").fadeIn(2500);
+		$(this).parents("p").children("a.label.red").fadeOut(600);
+	});
+
+});
+</script>
+
 <script src="video-js/video.js" type="text/javascript" charset="utf-8"></script>
 <link rel="stylesheet" href="video-js/video-js.css" type="text/css" media="screen" title="Video JS" charset="utf-8">
 <!-- VideoJS Optional Skins -->

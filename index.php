@@ -35,7 +35,7 @@ $stats = new statistics();
                                 <div id="featured" style="width: 568px; text-align: right;"> 
                                     <?php 
                                     $show = new show(0);
-                                    $show->getAllBanners(); 
+                                    $show->getAllBanners("RAND()"); 
 
                                     ?>
                                 </div>

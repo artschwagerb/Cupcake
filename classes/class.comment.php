@@ -83,7 +83,7 @@
 						}elseif($this->status==2){
 							echo '<p style="color: #C0C0C0; ">This message has been hidden at the request of the user.';
 						}else {
-							echo "<p>".nl2br(strip_tags($this->message, '<p><a><img>'))."</p>";
+							echo "<p>".nl2br(strip_tags($this->message, '<p><a><img><span>'))."</p>";
 						} 
 							
 						?></p>

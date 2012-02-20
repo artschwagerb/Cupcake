@@ -20,15 +20,37 @@ $prevpage = $_GET["prevpage"];
 		<div class="row">
 			<div class="eight columns">
 				<div class="row">
-					<div class="twelve columns">
 					<h4>Browser Compatibility</h4>	
 					<p>As of right now the site works awesome in Chrome, everything else is an interesting struggle...</p>
-					<ul>
-					<li>Firefox doesnt support HTML5 mp4's</li>
-					<li>Internet Explorer just plain sucks...</li>
+					<ul class="nice">
+                                            <span class="green label">Google Chrome</span>
+                                            <li>Everything works great, USE IT.</li>
+                                            <span class="red label">Firefox</span>
+                                            <li>Videos(mp4) are not supported.</li>
+                                            <span class="blue label">Internet Explorer</span>
+                                            <li>seems to work, but I don't recommend it.</li>
 					</ul>
-					</div>
 				</div>
+                                <div class="row">
+					<h4>Rules</h4>	
+					<p>Don't be an asshat, I will ban...</p>
+					<ul class="nice">
+                                            <li>No Spamming.</li>
+                                            <li><p>Keep things safe for work, if they are not... wrap them in <span class="spoiler">Spoiler Tags</span>.</p></li>
+                                            <li>Don't make my life difficult, if you are being malicious or breaking things... you will be banned.</li>
+					</ul>
+				</div>
+                                <div class="row">
+                                    <h4>How to use Spoiler Tags</h4>
+                                    <p>Create spoilers using the code example below.</p>
+                                    <img src="images/support/spoiler-code.PNG" />
+                                    <p>This is how they will look on the page, just click the spoiler to display it.</p>
+                                    <img src="images/support/spoiler-view.PNG" />
+                                </div>
+                                <div class="row">
+                                    <h4>Good Luck, Have Fun...</h4>
+                                </div>
+                                
 			</div>
 
 			<div class="four columns">			

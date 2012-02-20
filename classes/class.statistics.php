@@ -236,7 +236,7 @@ class statistics {
 								<p><?php if($user->CheckPremium()){echo "Yes";}else{echo "No";}; ?></p>
 							</div>
 							<div class="two columns">
-								<p><?php echo date('g:i a', strtotime(TIME_OFFSET, strtotime($user->lastDate))); ?></p>
+								<p><?php echo date('F j, Y, g:i a', strtotime(TIME_OFFSET, strtotime($user->lastDate))); ?></p>
 							</div>
 						</div>
 						<?php
@@ -290,7 +290,7 @@ class statistics {
 								<p><a href="show.php?id=<?php echo $show->tvdb_series_id; ?>"><?php echo $show->name; ?></a></p>
 							</div>
 							<div class="three columns">
-								<p><?php echo date('F j, Y', strtotime(TIME_OFFSET, strtotime($show->date_added))); ?></p>
+								<p><?php echo date('F j, Y, g:i a', strtotime(TIME_OFFSET, strtotime($show->date_added))); ?></p>
 							</div>
 						</div>
 						<?php
@@ -344,7 +344,7 @@ class statistics {
 								<p><a href="show.php?id=<?php echo $show->tvdb_series_id; ?>"><?php echo $show->name; ?></a></p>
 							</div>
 							<div class="three columns">
-								<p><?php echo $show->date_added; ?></p>
+								<p><?php echo date('F j, Y, g:i a', strtotime(TIME_OFFSET, strtotime($show->date_added))); ?></p>
 							</div>
 						</div>
 						<?php
@@ -360,7 +360,7 @@ class statistics {
 	
 	function get_requests() {
 		$dbstuff = new databee();
-		$res = $dbstuff->query("SELECT id FROM c_comment where status_id = 1 and type =3;");
+		$res = $dbstuff->query("SELECT id FROM c_comment where status_id = 1 and type =2;");
 		
 		?>
 			<div class="row">
@@ -382,10 +382,10 @@ class statistics {
 				<div class="panel">
 					<div class="row">
 							<div class="six columns">
-								<p><b>Type</b></p>
+								<p><b>User</b></p>
 							</div>
 							<div class="three columns">
-								<p><b>Link</b></p>
+								<p><b>Date</b></p>
 							</div>
 					</div>
 					<?php
@@ -398,11 +398,75 @@ class statistics {
 								<p><a href="user.php?id=<?php echo $comment->user->id; ?>"><?php echo $comment->user->username; ?></a></p>
 							</div>
 							<div class="three columns">
-								<p><?php echo $comment->date_added; ?></p>
+								<p><?php echo date('F j, Y, g:i a', strtotime(TIME_OFFSET, strtotime($comment->date_added))); ?></p>
 							</div>
 						</div>
 						<div class="row">
 							<p><?php echo nl2br(strip_tags($comment->message)); ?></p>
+						</div>
+						<?php
+						}
+					}
+					?>
+				</div>
+			</div>
+			
+		<?php
+	
+	}
+        
+        function get_episode_problems() {
+		$dbstuff = new databee();
+		$res = $dbstuff->query("SELECT id, parent_id FROM c_comment where status_id = 1 and type =1;");
+		
+		?>
+			<div class="row">
+				<div class="eight columns">
+					<h6>TV Show Problems</h6>
+				</div>
+				<div class="one column">
+					<?php echo mysql_num_rows($res); ?>
+				</div>
+				<div class="two columns">
+					Problems
+				</div>
+				<div class="one column">
+							<p><a class="xsmall white nice button radius" href="javascript:;" onmousedown="toggleDiv('episodes_reported',this);">v</a></p>
+				</div>
+			</div>
+			
+			<div id="episodes_reported" style="display: none; " class="row">
+				<div class="panel">
+					<div class="row">
+							<div class="five columns">
+								<p><b>Item</b></p>
+							</div>
+							<div class="four columns">
+								<p><b>Info</b></p>
+							</div>
+					</div>
+					<?php
+					if(mysql_num_rows($res) != 0){
+						while($row = mysql_fetch_assoc($res)) {
+						$comment = new comment($row['id']);
+                                                $episode = new episode($row['parent_id']);
+                                                
+						?>
+						<div class="row">
+							<div class="five columns">
+								<p><a href="user.php?id=<?php echo $comment->user->id; ?>"><?php echo $comment->user->username; ?></a></p>
+							</div>
+							<div class="four columns">
+								<p><?php echo date('F j, Y, g:i a', strtotime(TIME_OFFSET, strtotime($comment->date_added))); ?></p>
+							</div>
+						</div>
+						<div class="row">
+                                                    <div class="five columns">
+							<p><?php echo nl2br(strip_tags($comment->message)); ?></p>
+                                                    </div>
+                                                    <div class="four columns">
+                                                        <p><a href="player.php?id=<?php echo $comment->parent_id; ?>"><?php echo $episode->show->name; ?> - <?php echo $episode->name; ?></a></p>
+                                                    </div>
 						</div>
 						<?php
 						}

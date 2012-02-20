@@ -48,6 +48,7 @@ $stats = new statistics();
 				</li>
 				<li id="moderationTab">
 					<?php echo $stats->get_requests(); ?>
+                                        <?php echo $stats->get_episode_problems(); ?>
 				</li>
 				</ul>
 				</div>

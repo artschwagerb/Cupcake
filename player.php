@@ -23,7 +23,7 @@ if (!empty($_POST['add-comment'])) {
 	$commenttochange->add($_POST['message'],0,$episode->tvdb_episode_id);
 	//$dbstuff->execute("INSERT INTO c_comment (user_id, message, status, type, parent_id) VALUES ('".addSlashes($fgmembersite->UserID())."', '".addSlashes($_POST['message'])."', '1', '0', '".addSlashes($episode->tvdb_episode_id)."')");
 	//do something here;
-	header("Location: player.php?id=".$episode->tvdb_episode_id);
+        echo '<META HTTP-EQUIV="Refresh" Content="0; URL=player.php?id='.$episode->tvdb_episode_id.'">';
 }
 if (!empty($_POST['remove-comment'])) {
 	$commenttochange = new comment($_POST['comment-id']);
@@ -55,7 +55,7 @@ if (!empty($_POST['acknowledge-comment'])) {
 }
 if (!empty($_POST['report-problem'])) {
 	$commenttochange = new comment();
-	$commenttochange->add($_POST['problem']."     ---     ".$_POST['comment'],2,$episode->tvdb_episode_id);
+	$commenttochange->add($_POST['problem']."     ---     ".$_POST['comment'],1,$episode->tvdb_episode_id);
 	//$dbstuff->execute("INSERT INTO c_comment (user_id, message, status, type, parent_id) VALUES ('".addSlashes($fgmembersite->UserID())."', '".addSlashes($_POST['message'])."', '1', '0', '".addSlashes($episode->tvdb_episode_id)."')");
 	//do something here;
 }

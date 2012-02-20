@@ -19,7 +19,7 @@ if (!empty($_POST['request-series'])) {
 	$commenttochange->add($_POST['seriesname'],3,0);
 	//$dbstuff->execute("INSERT INTO c_comment (user_id, message, status, type, parent_id) VALUES ('".addSlashes($fgmembersite->UserID())."', '".addSlashes($_POST['message'])."', '1', '0', '".addSlashes($episode->tvdb_episode_id)."')");
 	//do something here;
-	header("Location: show.php");
+	echo '<META HTTP-EQUIV="Refresh" Content="0; URL=show.php?">';
 }
 ?>
 
@@ -28,7 +28,7 @@ if (!empty($_POST['request-series'])) {
 		<?php $show->getAllBanners(); ?>
 		</div>
 		<div class="four columns">
-			<form name="report_problem" method="post" class="nice">
+			<form name="request-series" method="post" class="nice">
 			<fieldset>
 							<h5>Request a TV Series</h5>
 							<p>What series is just too amazing to miss?</p>

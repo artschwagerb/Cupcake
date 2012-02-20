@@ -55,7 +55,7 @@ $topic = new topic(0);
                             <h5>Create a Discussion</h5>
                             <p>Whats on your Mind?</p>
 
-                            <label>Name</label>
+                            <label>Topic</label>
                             <input type="text" name="topicname" class="input-text">
                             <label>Message</label>
                             <textarea name="topicmessage" class="input-text"></textarea>
