@@ -7,3 +7,5 @@ This file is responsible for database transactions
 This file is responsible for authentication
 
 Import the cupcake.sql file into your mysql server.  It should create the database.  You will have to create a username/password that can access it.
+
+Insert your admin user into the u_users table with a status_id = 9.
