@@ -110,12 +110,19 @@ require_once("./include/membersite_config.php");
 							<div class="one column">
 									<p><?php echo $episode->number; ?></p>
 							</div>
-							<div class="six columns">
+							<div class="five columns">
 									<p><a href="player.php?id=<?php echo $episode->tvdb_episode_id; ?>"><?php echo $episode->name; ?></a></p>
 							</div>
 							<div class="two columns">
 									<div class="hide-on-desktops"><p><a class="xsmall white nice button radius" href="player.php?id=<?php echo $episode->tvdb_episode_id; ?>">WATCH</a></p></div>
 							</div>
+                                                        <div class="one column">
+                                                            <?php
+                                                            if($episode->check_Viewed() == true){
+                                                                echo '<p style="vertical-align: middle; margin-top: 4px;"><img src="images/eye-icon.png" title="Previously Watched" /></p>';
+                                                            }
+                                                            ?>
+                                                        </div>
 							<div class="two columns">
 									<div class="rating"><div class="cover"></div><div class="progress" style="width: <?php echo $episode->rating*10; ?>%;"></div></div>
 							</div>

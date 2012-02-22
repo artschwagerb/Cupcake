@@ -13,6 +13,7 @@
 		var $tvdb_episode_id;
 		var $rating;
 		var $date_aired;
+                var $viewed;
 		
 		function __construct($epi_id) {
 			
@@ -34,6 +35,7 @@
 					$this->date_added = $row['date_added'];
 					$this->date_aired = $row['date_aired'];
 					$this->rating = $row['rating'];
+                                        $this->viewed = $this->check_Viewed();
 				}
 			}
 		}
@@ -137,7 +139,20 @@
 			
 			<div class="thinline"></div>
 			<?php
-		}	
+		}
+                
+                public function check_Viewed() {
+                    $dbstuff = new databee();
+			
+                    $res = $dbstuff->query("SELECT id FROM u_activity WHERE parent_id=".$this->tvdb_episode_id." and type_id=1 and user_id ='".$_SESSION['id_of_user']."';");
+
+                    if(mysql_num_rows($res) == 0){
+                        return false;
+                    } else {
+                        return true;
+                    }
+                    
+                }
 		
 		public function log_View() {
 			$dbstuff = new databee();

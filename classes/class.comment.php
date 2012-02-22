@@ -33,9 +33,6 @@
 			<div class="row">
 				<div class="twelve columns">
 					<div class="row">
-						<div class="one column">
-							<?php echo "#".$this->id; ?>
-						</div>
 						<div class="four columns">
 							<p><a href="user.php?id=<?php echo $this->user->id; ?>"><?php echo ucfirst($this->user->displayname); ?></a></p>
 						</div>
@@ -73,7 +70,7 @@
 							</form>
 						</div>
 						<div class="four columns">
-							<p style="text-align: right; font-size: 10px; "><?php echo date('F j, Y, g:i a', strtotime(TIME_OFFSET, strtotime($this->date_added))); ?></p>
+							<p style="text-align: right; font-size: 10px; "><?php echo date('F j, Y, g:i:s a', strtotime(TIME_OFFSET, strtotime($this->date_added))); ?></p>
 						</div>
 					</div>
 					<div class="row">
