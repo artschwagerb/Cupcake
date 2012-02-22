@@ -122,9 +122,9 @@
 			// }
 		// }
 		
-		public function getAllBanners($orderby = "name") {
+		public function getAllBanners($orderby = "name", $limit = "") {
 			$dbstuff = new databee();
-			$res = $dbstuff->query("SELECT * FROM v_show ORDER BY $orderby;");
+			$res = $dbstuff->query("SELECT * FROM v_show ORDER BY $orderby $limit;");
 			if(mysql_num_rows($res) != 0){
 				while($row = mysql_fetch_assoc($res)) {
 					$show = new show($row['tvdb_series_id']);

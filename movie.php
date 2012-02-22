@@ -46,7 +46,8 @@ $movie = new movie(0);
 <?php
 }else{
 $movie = new movie($_GET["id"]);
-//$movie->view();
+//Log a view----------
+$movie->logView();
 ?>
 <div class="row">
 			<div class="eight columns">

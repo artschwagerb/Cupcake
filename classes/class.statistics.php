@@ -4,7 +4,7 @@ class statistics {
 	
 	function get_shows_watched_summary($hours) {
 		$dbstuff = new databee();
-						$res = $dbstuff->query("SELECT *,COUNT(*) AS 'total' FROM v_episode_view WHERE date_of_play > DATE_SUB( NOW(), INTERVAL $hours HOUR) GROUP BY tvdb_episode_id;");
+						$res = $dbstuff->query("SELECT *,COUNT(*) AS 'total' FROM u_activity WHERE type_id=1 and date_of_play > DATE_SUB( NOW(), INTERVAL $hours HOUR) GROUP BY parent_id;");
 						?>
 						<div class="row">
 							<div class="eight columns">
@@ -34,19 +34,76 @@ class statistics {
 								<?php
 								if(mysql_num_rows($res) != 0){
 									while($row = mysql_fetch_assoc($res)) {
-									$episode = new episode($row['tvdb_episode_id']);
-									$user = new user($row['user_id']);
-									?>
-									<div class="row">
-										<div class="eight columns">
-											<p><a href="player.php?id=<?php echo $episode->tvdb_episode_id; ?>"><?php echo $episode->show->name; ?> - <?php echo $episode->name; ?></a></p>
-										</div>
-										<div class="four columns">
-											<p><?php echo $row['total']; ?></p>
-										</div>
-									</div>
-									<?php
-									}
+                                                                        if($row['type_id']==1){
+                                                                            $episode = new episode($row['parent_id']);
+                                                                            $user = new user($row['user_id']);
+                                                                            ?>
+                                                                            <div class="row">
+                                                                                    <div class="eight columns">
+                                                                                            <p><a href="player.php?id=<?php echo $episode->tvdb_episode_id; ?>"><?php echo $episode->show->name; ?> - <?php echo $episode->name; ?></a></p>
+                                                                                    </div>
+                                                                                    <div class="four columns">
+                                                                                            <p><?php echo $row['total']; ?></p>
+                                                                                    </div>
+                                                                            </div>
+                                                                            <?php
+                                                                            }
+                                                                        }
+								}
+								?>
+								</div>
+						</div>
+						
+						<?php
+	}
+        
+        function get_movies_watched_summary($hours) {
+		$dbstuff = new databee();
+						$res = $dbstuff->query("SELECT *,COUNT(*) AS 'total' FROM u_activity WHERE type_id=2 and date_of_play > DATE_SUB( NOW(), INTERVAL $hours HOUR) GROUP BY parent_id;");
+						?>
+						<div class="row">
+							<div class="eight columns">
+								<h6>Movies Watched in Last <?php echo $hours; ?> Hours</h6>
+							</div>
+							<div class="one column">
+								<?php echo mysql_num_rows($res); ?>
+							</div>
+							<div class="two columns">
+								Movies
+							</div>
+							<div class="one column">
+										<p><a class="xsmall white nice button radius" href="javascript:;" onmousedown="toggleDiv('last_<?php echo $hours; ?>_hours_movies',this);">v</a></p>
+							</div>
+						</div>
+						
+						<div id="last_<?php echo $hours; ?>_hours_movies" style="display: none; " class="row">
+								<div class="panel">
+								<div class="row">
+                                                                    <div class="eight columns">
+                                                                            <p><b>Movie</b></p>
+                                                                    </div>
+                                                                    <div class="four columns">
+                                                                            <p><b>Views</b></p>
+                                                                    </div>
+                                                                </div>
+								<?php
+								if(mysql_num_rows($res) != 0){
+									while($row = mysql_fetch_assoc($res)) {
+                                                                        if($row['type_id']==2){
+                                                                            $movie = new movie($row['parent_id']);
+                                                                            $user = new user($row['user_id']);
+                                                                            ?>
+                                                                            <div class="row">
+                                                                                    <div class="eight columns">
+                                                                                            <p><a href="movie.php?id=<?php echo $movie->id; ?>"><?php echo $movie->name; ?></a></p>
+                                                                                    </div>
+                                                                                    <div class="four columns">
+                                                                                            <p><?php echo $row['total']; ?></p>
+                                                                                    </div>
+                                                                            </div>
+                                                                            <?php
+                                                                            }
+                                                                        }
 								}
 								?>
 								</div>
@@ -57,7 +114,7 @@ class statistics {
 	
 	function get_newsfeed($hours) {
 		$dbstuff = new databee();
-			$res = $dbstuff->query("SELECT * FROM v_episode_view WHERE date_of_play > DATE_SUB( NOW(), INTERVAL $hours HOUR) ORDER BY date_of_play DESC;");
+			$res = $dbstuff->query("SELECT * FROM u_activity WHERE date_of_play > DATE_SUB( NOW(), INTERVAL $hours HOUR) ORDER BY date_of_play DESC;");
 			?>
 			<div class="row">
 							<div class="eight columns">
@@ -75,22 +132,45 @@ class statistics {
 			</div>
 			<div id="last_<?php echo $hours; ?>_hours_newsfeed" style="display: none; " class="row">
 			<div class="panel">
+                        <div class="row">
+                            <div class="eight columns">
+                                    <p><b>Item</b></p>
+                            </div>
+                            <div class="four columns">
+                                    <p><b>Date</b></p>
+                            </div>
+                        </div>
 			<?php
 			if(mysql_num_rows($res) != 0){
-				while($row = mysql_fetch_assoc($res)) {
-				$episode = new episode($row['tvdb_episode_id']);
-				$user = new user($row['user_id']);
-				?>
-					<div class="row">
-						<div class="eight columns">
-							<p><a href="user.php?id=<?php echo $user->id; ?>"><?php echo ucfirst($user->username); ?></a> watched <a href="player.php?id=<?php echo $episode->tvdb_episode_id; ?>"><?php echo $episode->show->name; ?> - <?php echo $episode->name; ?></a></p>
-						</div>
-						<div class="four columns">
-							<p><?php echo date('F j, Y, g:i a', strtotime(TIME_OFFSET, strtotime($row['date_of_play']))); ?></p>
-						</div>
-					</div>
-				<?php
-				}
+                            while($row = mysql_fetch_assoc($res)) {
+                                if($row['type_id']==1){
+                                    $episode = new episode($row['parent_id']);
+                                    $user = new user($row['user_id']);
+                                    ?>
+                                            <div class="row">
+                                                    <div class="eight columns">
+                                                            <p><a href="user.php?id=<?php echo $user->id; ?>"><?php echo ucfirst($user->username); ?></a> watched <a href="player.php?id=<?php echo $episode->tvdb_episode_id; ?>"><?php echo $episode->show->name; ?> - <?php echo $episode->name; ?></a></p>
+                                                    </div>
+                                                    <div class="four columns">
+                                                            <p><?php echo date('F j, Y, g:i a', strtotime(TIME_OFFSET, strtotime($row['date_of_play']))); ?></p>
+                                                    </div>
+                                            </div>
+                                    <?php
+                                }elseif($row['type_id']==2){
+                                    $movie = new movie($row['parent_id']);
+                                    $user = new user($row['user_id']);
+                                    ?>
+                                            <div class="row">
+                                                    <div class="eight columns">
+                                                            <p><a href="user.php?id=<?php echo $user->id; ?>"><?php echo ucfirst($user->username); ?></a> watched <a href="movie.php?id=<?php echo $movie->id; ?>"><?php echo $movie->name; ?></a></p>
+                                                    </div>
+                                                    <div class="four columns">
+                                                            <p><?php echo date('F j, Y, g:i a', strtotime(TIME_OFFSET, strtotime($row['date_of_play']))); ?></p>
+                                                    </div>
+                                            </div>
+                                    <?php
+                                }
+                            }       
 			}
 			?>
 			</div>
@@ -100,12 +180,13 @@ class statistics {
 	
 		function get_newsfeed_summary($hours) {
 		$dbstuff = new databee();
-			$res = $dbstuff->query("SELECT * FROM v_episode_view WHERE date_of_play > DATE_SUB( NOW(), INTERVAL $hours HOUR) ORDER BY date_of_play DESC LIMIT 5;");
+			$res = $dbstuff->query("SELECT * FROM u_activity WHERE date_of_play > DATE_SUB( NOW(), INTERVAL $hours HOUR) ORDER BY date_of_play DESC LIMIT 5;");
 			?>
 			<?php
 			if(mysql_num_rows($res) != 0){
 				while($row = mysql_fetch_assoc($res)) {
-				$episode = new episode($row['tvdb_episode_id']);
+                                if($row['type_id'] == 1){
+				$episode = new episode($row['parent_id']);
 				$user = new user($row['user_id']);
 				?>
 					<div class="row">
@@ -131,15 +212,38 @@ class statistics {
 					</div>
 					<hr style="margin-top: 4px; margin-bottom: 4px;"/>
 				<?php
-				}
+				}elseif($row['type_id']==2){
+                                    $movie = new movie($row['parent_id']);
+                                    $user = new user($row['user_id']);
+                                    ?>
+                                            <div class="row">
+                                                    <div class="row" style="margin-bottom: 5px; ">
+                                                            <div class="twelve columns">
+                                                                    <span style="font-size: 12px; ">
+                                                                            <a href="movie.php?id=<?php echo $movie->id; ?>"><?php echo $movie->name; ?></a>
+                                                                    </span>
+                                                            </div>
+                                                    </div>
+                                                    <div class="row">
+                                                            <div class="nine columns">		
+                                                                    <span style="font-size: 9px; text-decoration: none;"><a class="clean" href="user.php?id=<?php echo $user->id; ?>"><?php echo ucfirst($user->displayname); ?></a></span>
+                                                            </div>
+                                                            <div class="three columns">		
+                                                                    <span style="font-size: 9px; "><?php echo date('g:i a', strtotime(TIME_OFFSET, strtotime($row['date_of_play']))); ?></span>
+                                                            </div>
+                                                    </div>
+                                            </div>
+                                            <hr style="margin-top: 4px; margin-bottom: 4px;"/>
+                                    <?php    
+                                    
+                                }
 			}
-			?>
-			<?php
+                 }            
 	}
 	
 	function get_shows_unwatched($hours) {
 		$dbstuff = new databee();
-		$res = $dbstuff->query("SELECT *,COUNT(*) AS 'total' FROM v_episode_view WHERE date_of_play > DATE_SUB( NOW(), INTERVAL $hours HOUR) GROUP BY tvdb_episode_id;");
+		$res = $dbstuff->query("SELECT *,COUNT(*) AS 'total' FROM u_activity WHERE date_of_play > DATE_SUB( NOW(), INTERVAL $hours HOUR) GROUP BY tvdb_episode_id;");
 		
 		?>
 			<div class="row">
@@ -213,10 +317,10 @@ class statistics {
 						<div class="three columns">
 							<p><b>IP Address</b></p>
 						</div>
-						<div class="three columns">
+						<div class="two columns">
 							<p><b>Premium</b></p>
 						</div>
-						<div class="two columns">
+						<div class="three columns">
 							<p><b>Logged in</b></p>
 						</div>
 					</div>
@@ -232,10 +336,10 @@ class statistics {
 							<div class="three columns">
 								<p><?php echo $user->last_ip; ?></p>
 							</div>
-							<div class="three columns">
+							<div class="two columns">
 								<p><?php if($user->CheckPremium()){echo "Yes";}else{echo "No";}; ?></p>
 							</div>
-							<div class="two columns">
+							<div class="three columns">
 								<p><?php echo date('F j, Y, g:i a', strtotime(TIME_OFFSET, strtotime($user->lastDate))); ?></p>
 							</div>
 						</div>
@@ -274,7 +378,10 @@ class statistics {
 				<div class="panel">
 					<div class="row">
 							<div class="six columns">
-								<p><b>Name</b></p>
+								<p><b>Show</b></p>
+							</div>
+                                                        <div class="three columns">
+								<p><b>Updated By</b></p>
 							</div>
 							<div class="three columns">
 								<p><b>Date Updated</b></p>
@@ -289,8 +396,11 @@ class statistics {
 							<div class="six columns">
 								<p><a href="show.php?id=<?php echo $show->tvdb_series_id; ?>"><?php echo $show->name; ?></a></p>
 							</div>
+                                                        <div class="three columns">
+								<p><a href="user.php?id=<?php echo $show->user->id; ?>"><?php echo $show->user->username; ?></a></p>
+							</div>
 							<div class="three columns">
-								<p><?php echo date('F j, Y, g:i a', strtotime(TIME_OFFSET, strtotime($show->date_added))); ?></p>
+								<p><?php echo date('F j, Y', strtotime(TIME_OFFSET, strtotime($show->date_added))); ?></p>
 							</div>
 						</div>
 						<?php

@@ -141,10 +141,10 @@
 		
 		public function logView() {
 			$dbstuff = new databee();
-			$res = $dbstuff->query("SELECT * FROM v_episode_view WHERE tvdb_episode_id='".$this->tvdb_episode_id."' and DATE(date_of_play) = CURDATE() and user_id ='".$_SESSION['id_of_user']."';");
+			$res = $dbstuff->query("SELECT * FROM u_activity WHERE parent_id='".$this->tvdb_episode_id."' and type_id='1' and DATE(date_of_play) = CURDATE() and user_id ='".$_SESSION['id_of_user']."';");
 			if(mysql_num_rows($res) == 0){
 				//Only log a view if they dont already have a play of this episode today
-				$dbstuff->execute("INSERT INTO v_episode_view (tvdb_episode_id, user_id) VALUES ('".$this->tvdb_episode_id."', '".$_SESSION['id_of_user']."')");
+				$dbstuff->execute("INSERT INTO u_activity (parent_id, user_id, type_id) VALUES ('".$this->tvdb_episode_id."', '".$_SESSION['id_of_user']."', '1')");
 			}
 		
 		}

@@ -74,7 +74,7 @@ $(document).ready(function() {
 
 	$("span.spoiler").hide();
 
-	 $('<a class="label red">Reveal Spoiler</a> ').insertBefore('.spoiler');
+	 $('<a class="label red" style="cursor: pointer; cursor: hand; color: #FFFFFF;">Reveal Spoiler</a> ').insertBefore('.spoiler');
 
 	$("a.label.red").click(function(){
 		$(this).parents("p").children("span.spoiler").fadeIn(2500);
@@ -82,6 +82,21 @@ $(document).ready(function() {
 	});
 
 });
+</script>
+
+<script type="text/javascript">
+
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-29123919-1']);
+  _gaq.push(['_setDomainName', 'cupcake.coral.feralhosting.com']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+
 </script>
 
 <script src="video-js/video.js" type="text/javascript" charset="utf-8"></script>
@@ -94,7 +109,6 @@ $(document).ready(function() {
 </script>	
 </head>
 <body>
-	<?php //include_once("include/analyticstracking.php"); ?>
 	<!-- container -->
 	<div class="container">
 

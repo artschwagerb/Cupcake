@@ -25,7 +25,15 @@ $season = new season($_GET["id"]);
 						<a title="<?php echo $season->show->name; ?>" href="show.php?id=<?php echo $season->show->tvdb_series_id; ?>"><img src="<?php echo $season->show->getBanner(); ?>" /></a>
 					</div>
 				</div>
-				<h5><?php echo "Season ".$season->number;?></h5>
+                            <div class="row">
+                                <div class="two columns">
+                                    <h4>Season</h4>    
+                                </div>
+                                <div class="ten columns">
+                                    <?php echo $season->show->getSeasons($season->tvdb_season_id); ?>
+                                </div>
+                            </div>
+				
 				<br />
 				
 <?php
@@ -36,9 +44,6 @@ $season->getEpisodes($fgmembersite->CheckPremium());
 			<div class="four columns">			
 				<h4><?php echo $season->show->name; ?></h4>
 				<p><?php echo nl2br($season->show->description); ?></p>
-				
-				<h4>Seasons</h4>
-				<p><?php $season->show->getSeasons($season->tvdb_season_id) ?></p>
 
 				<h4>Information</h4>
 				<div class="row">

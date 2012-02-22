@@ -150,10 +150,10 @@
 			$quote[3]="This is supposed to be the most powerful nation, not the most pathetic.";
 			$quote[4]="Everything I do has to be perfect, everything I cook has to be delicious! So, yeah, sometimes I freak out to people when they don't do the best they can.";
 			$quote[5]="People have no idea about the pressure that's resting on my shoulders. If I would be baking hamburgers in a snack bar, I would be a very relaxed dude, but I'm on the top! When something goes wrong here, it really goes wrong, and there are a lot of people waiting for that to happen.";
-			$quote[6]="I have a very assertive way. It�s wake up, move your ass, or piss off home.";
-			$quote[7]="I maintain standards and I strive for perfection. That level of pressure is conveyed in a very bullish way and that�s what commenting is all about.";
+			$quote[6]="I have a very assertive way. It's wake up, move your ass, or piss off home.";
+			$quote[7]="I maintain standards and I strive for perfection. That level of pressure is conveyed in a very bullish way and that's what commenting is all about.";
 			$quote[8]="What makes you think that anyone would be interested in reading that?";
-			$quote[9]="I�m quite a chauvinistic person.";
+			$quote[9]="I'm quite a chauvinistic person.";
 			$quote[10]="Do you know how much time I wasted reading your comment?  None.";
 			$quote[11]="The problem with Yanks is they are wimps.";
 			
@@ -169,7 +169,7 @@
 			$quote[4]="...there's no I in 'team'. There is a me, though, if you jumble it up.";
 			$quote[5]="Everybody does stupid things, it shouldn't cost them everything they want in life.";
 			$quote[6]="It's been established that time is not a rigid construct.";
-			$quote[7]="It's one of the great tragedies of life � something always changes.";
+			$quote[7]="It's one of the great tragedies of life, something always changes.";
 			$quote[8]="I was never that great at math, but next to nothing is higher than nothing, right?";
 			$quote[9]="I am right, you are wrong.";
 			$quote[10]="...the answer...to life itself: Sex.";
