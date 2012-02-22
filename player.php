@@ -16,8 +16,43 @@ echo "episode id not provided.";
 }else{
 $episode = new episode($_GET["id"]);
 //Log a view----------
-$episode->logView();
+$episode->log_View();
+?>
 
+<script type="text/javascript">
+<?php
+$nextepisodetoplay = new episode($episode->getNextEpisode())
+?>
+var nextVideo = "<?php echo $nextepisodetoplay->filename;?>";
+var episodePlayer = document.getElementsByTagName('video');
+episodePlayer.onend = function(){
+    //episodePlayer.src = nextVideo;
+    //episodePlayer.play();
+    
+    //var mediaSource = document.getElementsByTagName('source')[0];
+    //var mediaSource = document.getElementById('episodePlayer')
+    //mediaSource.src = nextVideo;
+
+    //var player = document.getElementByTagName('video')[0];
+    //player.load();
+    //player.play();
+}
+
+
+</script>
+
+<script type="text/javascript">
+<?php
+$nextepisodetoplay = new episode($episode->getNextEpisode())
+?>
+//var nextVideo = "<?php echo $nextepisodetoplay->filename;?>";
+
+//var videoPlayer = document.getElementById('videoPlayer');
+//videoPlayer.onend = function(){
+//    videoPlayer.src = nextVideo;
+//}
+</script>
+<?php
 if (!empty($_POST['add-comment'])) {
 	$commenttochange = new comment();
 	$commenttochange->add($_POST['message'],0,$episode->tvdb_episode_id);
@@ -101,11 +136,9 @@ if (!empty($_POST['report-problem'])) {
 				<div class="row">
 					<center>
 						<div class="video-js-box vim-css">
-							<video preload="auto" class="video-js" width="624" height="352" controls preload>
+							<video id="episodeplayer" preload="auto" class="video-js" width="624" height="352" controls preload>
 							  <source src="<?php echo $episode->filename;?>" type='video/mp4; codecs="avc1.42E01E, mp4a.40.2"' />
 								<!-- Image Fallback. Typically the same as the poster image. -->
-								<!-- <img src="<?php echo "images/shows/previews/".$episode->tvdb_episode_id.".jpg"; ?>" width="480" height="270" alt="Poster Image" title="No video playback capabilities." /> -->
-							  </object>
 							</video>
 					    
                                                 </div>

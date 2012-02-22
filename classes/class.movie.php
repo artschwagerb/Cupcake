@@ -187,7 +187,7 @@
 			<?php
 		}
                 
-                public function logView() {
+                public function log_View() {
 			$dbstuff = new databee();
 			$res = $dbstuff->query("SELECT * FROM u_activity WHERE parent_id='".$this->id."' and type_id='2' and DATE(date_of_play) = CURDATE() and user_id ='".$_SESSION['id_of_user']."';");
 			if(mysql_num_rows($res) == 0){
