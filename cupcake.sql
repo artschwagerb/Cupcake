@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Generation Time: Feb 22, 2012 at 10:19 AM
+-- Generation Time: Feb 22, 2012 at 09:19 PM
 -- Server version: 5.1.41
 -- PHP Version: 5.3.3-7+squeeze7
 
@@ -35,7 +35,7 @@ CREATE TABLE IF NOT EXISTS `c_comment` (
   `type` int(11) NOT NULL,
   `parent_id` int(11) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=31 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=32 ;
 
 -- --------------------------------------------------------
 
@@ -77,6 +77,7 @@ CREATE TABLE IF NOT EXISTS `c_topic` (
   `date_created` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `user_id` int(11) NOT NULL,
   `status` int(11) NOT NULL COMMENT '0 for disabled, 1 for enabled',
+  `date_modified` datetime NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=13 ;
 
@@ -108,7 +109,7 @@ CREATE TABLE IF NOT EXISTS `u_activity` (
   `date_of_play` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `type_id` int(11) NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=149 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=153 ;
 
 -- --------------------------------------------------------
 
