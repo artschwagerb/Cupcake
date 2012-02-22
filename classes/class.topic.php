@@ -22,6 +22,7 @@
 					$this->user = new user($row['user_id']);
 					$this->name = $row['name'];
 					$this->date_created = $row['date_created'];
+                                        $this->date_modified = $row['date_modified'];
 					$this->status = $row['status'];
                                         $this->post_count = $this->get_Comment_Count();
                                         $this->last_post = $this->get_Last_Post();
