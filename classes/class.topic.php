@@ -58,7 +58,8 @@
                 public function getAllTopics() {
                 $dbstuff = new databee();
 
-                    $res = $dbstuff->query("SELECT t.id, c.date_added FROM c_topic as t, c_comment as c WHERE t.status=1 AND t.id=c.parent_id GROUP BY t.id ORDER BY c.date_added ASC;");
+                    //$res = $dbstuff->query("select id, date_created, (select max(date_added) from c_comment where parent_id = t.id ) as moddate  from c_topic t where id in (Select parent_id From c_comment GROUP BY parent_id) order by (select max(date_added) from c_comment where parent_id = t.id ) DESC");
+                    $res = $dbstuff->query("select id from c_topic WHERE status = 1 ORDER BY date_modified DESC;");
                     if(mysql_num_rows($res) != 0){
                         while($row = mysql_fetch_assoc($res)) {
                             
