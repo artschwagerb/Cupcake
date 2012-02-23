@@ -91,7 +91,7 @@
                 
                 public function add($name,$message) {
 			$dbstuff = new databee();
-			$dbstuff->execute("INSERT INTO c_topic (name, user_id, status) VALUES ('".addSlashes($name)."', '".addSlashes($_SESSION['id_of_user'])."', '1')");
+			$dbstuff->execute("INSERT INTO c_topic (name, user_id, status, date_modified) VALUES ('".addSlashes($name)."', '".addSlashes($_SESSION['id_of_user'])."', '1', '".date('y-m-d G:i:s')."')");
                         $res = $dbstuff->query("SELECT id FROM c_topic WHERE name='".addSlashes($name)."' AND user_id='".addSlashes($_SESSION['id_of_user'])."' ORDER BY date_created LIMIT 1;");
 
 			if(mysql_num_rows($res) != 0){

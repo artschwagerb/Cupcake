@@ -13,12 +13,20 @@ include TEMPLATE_PATH."/header.php";
 
 $stats = new statistics();
 ?>
-<div id="myModal" class="reveal-modal">
+<div id="buypremium" class="reveal-modal">
      <h2>Premium</h2>
      <p class="lead">You are being a mooch, you should donate some money.</p>
      
      <p>Websites don't run off hopes and dreams, well dreams sort of... but money, yeah money.</p>
      <img src="images/funny/jackie-chan-whut.jpg" /><br />
+     <a class="close-reveal-modal">&#215;</a>
+</div>
+<div id="newdomain" class="reveal-modal">
+     <h2>New Domain</h2>
+     <p class="lead"><a href="http://www.cupcakesfor.me">cupcakesfor.me</a></p>
+     
+     <p>Please update your bookmarks... and thanks for putting up with the long address.</p>
+	 <img src="http://i.imgur.com/8KwUy.jpg" /><br />
      <a class="close-reveal-modal">&#215;</a>
 </div>
 
@@ -27,11 +35,21 @@ $stats = new statistics();
                             <div class="row">
                                     <center>
                                     <?php if(!$fgmembersite->CheckPremium()) { ?>
-                                            <?php echo "<script type='text/javascript'> $(document).ready(function() { $('#myModal').reveal(); }); </script>"; ?>
+                                            <?php echo "<script type='text/javascript'> $(document).ready(function() { $('#buypremium').reveal(); }); </script>"; ?>
                                             <br />               
                                             <p class="alert-box error">Your Account is Limited, Premium is Available...</p>
+											<br />
                                     <?php } ?>
-                                    <br />
+									
+									<?php 
+									$pos = strpos($_SERVER['HTTP_HOST'], "feralhosting.com");
+									if($pos === false) {
+										//Do nothing
+									} else {
+									?>
+                                            <?php echo "<script type='text/javascript'> $(document).ready(function() { $('#newdomain').reveal(); }); </script>"; ?>
+                                    <?php } ?>
+                                    
                                     <img src="http://i.imgur.com/ZxnvQ.jpg" />
                                     </center>
                             </div>
