@@ -11,6 +11,48 @@ if(isset($_POST['submitted']))
 {
    if($fgmembersite->ChangePassword())
    {
+       $mail             = new PHPMailer();
+
+            //$body             = file_get_contents('contents.html');
+            //$body             = str_ireplace("[\]",'',$body);
+            
+
+            $mail->IsSMTP(); // telling the class to use SMTP
+            $mail->Host       = EMAIL_HOST; // SMTP server
+            $mail->SMTPDebug  = 1;                     // enables SMTP debug information (for testing)
+                                                    // 1 = errors and messages
+                                                    // 2 = messages only
+            $mail->SMTPAuth   = true;                  // enable SMTP authentication
+            $mail->SMTPSecure = "ssl";                 // sets the prefix to the servier
+            $mail->Host       = EMAIL_HOST;      // sets GMAIL as the SMTP server
+            $mail->Port       = 465;                   // set the SMTP port for the GMAIL server
+            $mail->Username   = EMAIL_USERNAME;  // GMAIL username
+            $mail->Password   = EMAIL_PASSWORD;            // GMAIL password
+
+            $mail->SetFrom(EMAIL_ADDRESS, EMAIL_NAME);
+
+            $mail->AddReplyTo(EMAIL_ADDRESS, EMAIL_NAME);
+
+            $mail->Subject    = "Password Changed";
+
+            $mail->AltBody    = "Your password has been changed... To view the message, please use an HTML compatible email viewer!"; // optional, comment out and test
+
+            $body             = "Your password has been changed by: ".$_SERVER['REMOTE_ADDR'];
+            $mail->MsgHTML($body);
+            
+
+            $address = $_SESSION['email_of_user'];
+            $mail->AddAddress($address, $_SESSION['name_of_user']);
+
+            //$mail->AddAttachment("images/phpmailer.gif");      // attachment
+            //$mail->AddAttachment("images/phpmailer_mini.gif"); // attachment
+
+            if(!$mail->Send()) {
+            echo "Mailer Error: " . $mail->ErrorInfo;
+            } else {
+            //echo "Message sent!";
+            }
+            
         include "changed-pwd.html";
    }
 }

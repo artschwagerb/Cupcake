@@ -24,7 +24,7 @@ if(isset($_POST['submitted']))
 <div id="login-box">
 
 <H2>Cupcake Bakery</H2>
-Please Login to Continue.
+Please Login for Them Cupcakes.
 <br />
 <br />
 <form id='login' action='<?php echo $fgmembersite->GetSelfScript(); ?>' method='post' accept-charset='UTF-8'>

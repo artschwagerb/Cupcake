@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <?php
 
+//Check Credentials-###############################################################################################
 require_once("./include/membersite_config.php");
 
 if(!$fgmembersite->CheckLogin())
@@ -14,9 +15,12 @@ if(!$fgmembersite->CheckAdmin())
 	exit;
 }
 
+//Include the important stuff-###############################################################################################
 include "config.php";
 include TEMPLATE_PATH."/header.php";
+// End of Include the important stuff-###############################################################################################
 
+//Process add-user form-###############################################################################################
 if (!empty($_POST['add-user'])) {
         $admin = new admin();
         $result = $admin->addUser();
@@ -33,6 +37,8 @@ if (!empty($_POST['add-user'])) {
             <?php 
             $user = new user($result);
             echo $user->view(); 
+            $mailer = new snailmail();
+            $mailer->newUser($user);
             
             }else{ 
             //Problem Creating User    
@@ -45,9 +51,40 @@ if (!empty($_POST['add-user'])) {
             <?php } ?>
         </div>
         <?php
-	//$dbstuff->execute("UPDATE c_comment SET status = 0 WHERE id = ".$_POST['comment-id']." and parent_id = ".$episode->tvdb_episode_id);
-   //do something here;
 }
+//End of add-user form-###############################################################################################
+
+//Process email-user form-###############################################################################################
+if (!empty($_POST['email-users'])) {
+        $admin = new admin();
+        $result = $admin->emailUsers();
+        ?>
+        <script type='text/javascript'> $(document).ready(function() { $('#add_User_Modal').reveal(); }); </script>
+        <div id="add_User_Modal" class="reveal-modal">
+            <?php if($result == 0){ 
+            //Sent Email      
+            ?>
+            <h2>Mass Email Sent</h2>
+            <p class="lead">Just thought I would let you know...</p>
+            <p>I went ahead and sent that email for you.</p>
+                
+            <p><b>Subject: </b><br /><?php echo $_POST['email-subject']; ?></p>
+            <p><b>Message: </b><br /><?php echo $_POST['email-message']; ?></p>
+            <?php 
+            
+            }else{ 
+            //Problem Sending Email  
+            ?>
+            <h2>Mass Email Failed</h2>
+            <p class="lead">Just thought I would let you know...</p>
+            <p>There was a problem sending that email for you.</p>
+            
+            <a class="close-reveal-modal">&#215;</a>
+            <?php } ?>
+        </div>
+        <?php
+}
+//End of email-users form-###############################################################################################
 
 $stats = new statistics();
 
@@ -85,10 +122,11 @@ $stats = new statistics();
 					<?php echo $stats->get_shows(); ?>
 				</li>
 				<li id="moderationTab">
-					<?php echo $stats->get_requests(); ?>
+					<?php //echo $stats->get_requests(); ?>
                                         <?php echo $stats->get_episode_problems(); ?>
 				</li>
                                 <li id="usersTab">
+                                    <!--Add User-#################################################################### -->
                                     <div class="row">
                                         <div class="eleven columns">
                                                 <h6>Add a User</h6>
@@ -99,7 +137,7 @@ $stats = new statistics();
                                     </div>
 					<div id="add_user" style="display: none; " class="row">
                                             <div class="panel">
-                                                <form name="seriesscript" method="post" class="nice">
+                                                <form name="adduser" method="post" class="nice">
 
                                                     <h5>Add User</h5>
                                                     <p>Need to create a new user?</p>
@@ -136,11 +174,44 @@ $stats = new statistics();
 
                                                     </div>
                                                     <br />
-                                                    <input type="submit" value="Submit" name="add-user" />
+                                                    <input type="submit" value="Add User" name="add-user" />
 
                                                 </form>
                                             </div>
                                         </div>
+                                        <!--End of Add User-#################################################################### -->
+                                        
+                                        <!--Email Users-#################################################################### -->
+                                        <div class="row">
+                                        <div class="eleven columns">
+                                                <h6>Email All Users</h6>
+                                        </div>
+                                        <div class="one column">
+                                                <p><a class="xsmall white nice button radius" href="javascript:;" onmousedown="toggleDiv('email_users',this);">v</a></p>
+                                        </div>
+                                    </div>
+					<div id="email_users" style="display: none; " class="row">
+                                            <div class="panel">
+                                                <form name="emailuser" method="post" class="nice">
+
+                                                    <h5>Email Users</h5>
+                                                    <p>Need to email all users?</p>
+                                                    <input type="hidden" name="authid" value="<?php echo $fgmembersite->UserID(); ?>">
+                                                    <div class="row">
+                                                        <div class="six columns">
+                                                            <label>Subject</label>
+                                                            <input type="text" name="email-subject" class="input-text">
+                                                            <label>Message</label>
+                                                            <textarea name="email-message" class="input-text" style="width:100%; background:none;"></textarea>
+                                                            <br />
+                                                            <input type="submit" value="Send Email" name="email-users" />
+                                                        </div>
+                                                        
+                                                    </div>        
+                                                </form>
+                                            </div>
+                                        </div>
+                                        <!--End of Email Users-#################################################################### -->
                                     <?php echo $stats->get_users_active(24); ?>
 				</li>
 				</ul>

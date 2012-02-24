@@ -91,7 +91,6 @@ class statistics {
 									while($row = mysql_fetch_assoc($res)) {
                                                                         if($row['type_id']==2){
                                                                             $movie = new movie($row['parent_id']);
-                                                                            $user = new user($row['user_id']);
                                                                             ?>
                                                                             <div class="row">
                                                                                     <div class="eight columns">
@@ -413,6 +412,22 @@ class statistics {
 		<?php
 	
 	}
+        /*
+        function get_views_per_day() {
+            $dbstuff = new databee();
+                $res = $dbstuff->query("SELECT date(date_of_play), sum(value) FROM u_activity WHERE date_of_play > DATE_SUB( NOW(), INTERVAL 1 WEEK) group by date(date_of_play);");
+                ?>
+                <?php
+                if(mysql_num_rows($res) != 0){
+                    while($row = mysql_fetch_assoc($res)) {
+                        $episode = new episode($row['parent_id']);
+                        $user = new user($row['user_id']);
+                             
+                    }   
+                }               
+	}
+        */
+        
 	
 	function get_reported_comments() {
 		$dbstuff = new databee();
@@ -468,6 +483,7 @@ class statistics {
 	
 	}
 	
+        /*
 	function get_requests() {
 		$dbstuff = new databee();
 		$res = $dbstuff->query("SELECT id FROM c_comment where status_id = 1 and type =2;");
@@ -490,6 +506,9 @@ class statistics {
 			
 			<div id="shows_requested" style="display: none; " class="row">
 				<div class="panel">
+                                        <?php
+					if(mysql_num_rows($res) != 0){
+                                        ?>
 					<div class="row">
 							<div class="six columns">
 								<p><b>User</b></p>
@@ -498,8 +517,9 @@ class statistics {
 								<p><b>Date</b></p>
 							</div>
 					</div>
-					<?php
-					if(mysql_num_rows($res) != 0){
+                                        <hr />
+					
+                                        <?php
 						while($row = mysql_fetch_assoc($res)) {
 						$comment = new comment($row['id']);
 						?>
@@ -516,7 +536,10 @@ class statistics {
 						</div>
 						<?php
 						}
-					}
+					}else {
+                                            echo "<p>No Entries Found.</p>";
+                                        }
+                                            
 					?>
 				</div>
 			</div>
@@ -524,6 +547,7 @@ class statistics {
 		<?php
 	
 	}
+        */
         
         function get_episode_problems() {
 		$dbstuff = new databee();
@@ -547,6 +571,9 @@ class statistics {
 			
 			<div id="episodes_reported" style="display: none; " class="row">
 				<div class="panel">
+                                        <?php
+					if(mysql_num_rows($res) != 0){
+                                        ?>
 					<div class="row">
 							<div class="five columns">
 								<p><b>Item</b></p>
@@ -556,7 +583,6 @@ class statistics {
 							</div>
 					</div>
 					<?php
-					if(mysql_num_rows($res) != 0){
 						while($row = mysql_fetch_assoc($res)) {
 						$comment = new comment($row['id']);
                                                 $episode = new episode($row['parent_id']);
@@ -578,9 +604,12 @@ class statistics {
                                                         <p><a href="player.php?id=<?php echo $comment->parent_id; ?>"><?php echo $episode->show->name; ?> - <?php echo $episode->name; ?></a></p>
                                                     </div>
 						</div>
+                                                <hr />
 						<?php
 						}
-					}
+					}else{
+                                            echo "<p>No Entries Found.</p>";
+                                        }
 					?>
 				</div>
 			</div>
