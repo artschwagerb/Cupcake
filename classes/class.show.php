@@ -122,9 +122,9 @@
 			// }
 		// }
 		
-		public function getAllBanners($orderby = "name", $limit = "") {
+		public function getAllBanners($orderby = "name", $other = "") {
 			$dbstuff = new databee();
-			$res = $dbstuff->query("SELECT * FROM v_show ORDER BY $orderby $limit;");
+			$res = $dbstuff->query("SELECT * FROM v_show ORDER BY REPLACE($orderby,'The ','') $other;");
 			if(mysql_num_rows($res) != 0){
 				while($row = mysql_fetch_assoc($res)) {
 					$show = new show($row['tvdb_series_id']);
@@ -137,7 +137,7 @@
 					?>
 					<div class="row">
 						<div class="twelve columns">
-							<a title="<?php echo $show->name; ?>" href="show.php?id=<?php echo $show->tvdb_series_id; ?>"><img src="images/shows/banners/<?php echo $show->tvdb_series_id; ?>.jpg" /></a>
+							<a title="<?php echo $show->name; ?>" href="season.php?id=<?php echo $show->getFirstSeason()->tvdb_season_id; ?>"><img src="images/shows/banners/<?php echo $show->tvdb_series_id; ?>.jpg" /></a>
 						</div>
 					</div>
 					<?php

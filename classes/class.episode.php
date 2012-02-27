@@ -15,7 +15,7 @@
 		var $date_aired;
                 var $viewed;
 		
-		function __construct($epi_id) {
+		function __construct($epi_id = 0) {
 			
 			$dbstuff = new databee();
 			$res = $dbstuff->query("SELECT * FROM v_episode WHERE tvdb_episode_id=".$epi_id.";");
@@ -107,17 +107,32 @@
 		public function getNextEpisode() {
 			$nextid = 0;
 			$dbstuff = new databee();
-			$res = $dbstuff->query("SELECT * FROM v_episode WHERE tvdb_season_id=".$this->season->tvdb_season_id." and number>".$this->number." LIMIT 1;");
+			$res = $dbstuff->query("SELECT tvdb_episode_id FROM v_episode WHERE tvdb_season_id=".$this->season->tvdb_season_id." and number>".$this->number." LIMIT 1;");
 			if(mysql_num_rows($res) != 0){
 				while($row = mysql_fetch_assoc($res)) {
 					$nextid = $row['tvdb_episode_id'];
 				}
 			}
 			return $nextid;
-			//echo $res;
-			// $this->username = $res['username'];
-			// $this->email = $res['email'];
 		}
+                
+                public function getNextEpisodes() {
+			$dbstuff = new databee();
+                        $episodes = array();
+			$res = $dbstuff->query("SELECT tvdb_episode_id FROM v_episode WHERE tvdb_season_id=".$this->season->tvdb_season_id." and number>".$this->number.";");
+			if(mysql_num_rows($res) != 0){
+				while($row = mysql_fetch_assoc($res)) {
+                                        $nextepisode = new self($row['tvdb_episode_id']);
+                                        array_push($episodes, $nextepisode);
+                                        //echo '{title:"'.$nextepisode->name.'",artist:"'.$nextepisode->show->name.'",free:true,m4v: "'.$nextepisode->filename.'"},';
+                                        
+				}
+                                return $episodes;
+			}
+			
+		}
+                
+                
 		
 		public function getComments() {
 			$dbstuff = new databee();

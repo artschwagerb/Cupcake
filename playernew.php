@@ -1,15 +1,24 @@
 <!DOCTYPE html>
-<html>
-<head>
-<meta charset=utf-8 />
+<?php
 
-<!-- Website Design By: www.happyworm.com -->
-<title>Demo : jPlayer as a video playlist player</title>
-<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
-<link href="stylesheets/skin/blue.monday/jplayer.blue.monday.css" rel="stylesheet" type="text/css" />
-<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.6/jquery.min.js"></script>
-<script type="text/javascript" src="javascripts/jquery.jplayer.min.js"></script>
-<script type="text/javascript" src="javascripts/jplayer.playlist.min.js"></script>
+require_once("./include/membersite_config.php");
+
+if(!$fgmembersite->CheckLogin())
+{
+    $fgmembersite->RedirectToURL("login.php");
+    exit;
+}
+include "config.php";
+include TEMPLATE_PATH."/header.php";
+
+if(empty($_GET["id"])){
+echo "episode id not provided.";
+}else{
+$episode = new episode($_GET["id"]);
+//Log a view----------
+$episode->log_View();
+?>
+
 <script type="text/javascript">
 //<![CDATA[
 $(document).ready(function(){
@@ -18,19 +27,29 @@ $(document).ready(function(){
 		jPlayer: "#jquery_jplayer_1",
 		cssSelectorAncestor: "#jp_container_1"
 	}, [
-		{title:"Big Buck Bunny Trailer",artist:"Blender Foundation",free:true,m4v: "http://www.jplayer.org/video/m4v/Big_Buck_Bunny_Trailer.m4v"},
-                {title:"Finding Nemo Teaser",artist:"Pixar",free:true,m4v: "http://www.jplayer.org/video/m4v/Finding_Nemo_Teaser.m4v"},
-                {title:"Incredibles Teaser",artist:"Pixar",free:true,m4v: "http://www.jplayer.org/video/m4v/Incredibles_Teaser.m4v"},
+                <?php
+                echo '{title:"'.$episode->name.'",artist:"'.$episode->show->name.'",free:true,m4v: "'.$episode->filename.'"},';
+                
+                $nextepisodes = $episode->getNextEpisodes();
+                foreach($nextepisodes as $next_episode){
+                echo '{title:"'.$next_episode->name.'",artist:"'.$next_episode->show->name.'",free:true,m4v: "'.$next_episode->filename.'"},';
+                }
+                ?>
 	], {
-		swfPath: "js",
+		swfPath: "javascript",
 		supplied: "m4v"
 	});
+        
+        $("#jquery_jplayer_1").bind($.jPlayer.event.play, function(event) { // Add a listener to report the time play began
+        // Get the pathname and homepage values in a manner suitable to your
+        // application before the following check.
+        document.write($("#jquery_jplayer_1").data("jPlayer").status.src)
+        });
 
 });
 //]]>
 </script>
-</head>
-<body>
+<center>
 		<div id="jp_container_1" class="jp-video jp-video-270p">
 			<div class="jp-type-playlist">
 				<div id="jquery_jplayer_1" class="jp-jplayer"></div>
@@ -88,6 +107,9 @@ $(document).ready(function(){
 				</div>
 			</div>
 		</div>
-</body>
-
-</html>
+</center>
+<?php } ?>
+		
+	<?php 
+	include TEMPLATE_PATH."/footer.php";
+	?>

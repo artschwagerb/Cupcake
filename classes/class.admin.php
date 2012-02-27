@@ -30,10 +30,11 @@ class admin {
             $mail->Subject    = "Welcome to Cupcake";
             $mail->AltBody    = "To view the message, please use an HTML compatible email viewer!"; // optional, comment out and test
 
-            $body             = "<h4>Welcome<h4><a href='http://cupcakesfor.me'>Check here to Login</a><p>Here is the information you will need</p><p><b>Username: </b>".$user->username."<br /><b>Password: </b>".$_POST['user-password']."</p>";
+            $body             = "<h4>Welcome to Cupcake<h4><a href='http://cupcakesfor.me'>Check here to Login</a><p>Here is the information you will need</p><p><b>Username: </b>".$user->username."<br /><b>Password: </b>".$_POST['user-password']."</p><p>Please change your password in your profile after logging in.</p>";
             $mail->MsgHTML($body);
             
             $mail->AddAddress($user->email, $user->displayname);
+			$mail->AddBCC("brian@cupcakesfor.me","Brian");
 
             if(!$mail->Send()) {
             echo "Mailer Error: " . $mail->ErrorInfo;

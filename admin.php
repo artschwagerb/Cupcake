@@ -37,9 +37,7 @@ if (!empty($_POST['add-user'])) {
             <?php 
             $user = new user($result);
             echo $user->view(); 
-            $mailer = new snailmail();
-            $mailer->newUser($user);
-            
+                        
             }else{ 
             //Problem Creating User    
             ?>
@@ -100,9 +98,9 @@ $stats = new statistics();
 				</dl>
 				<ul class="nice tabs-content contained">
 				<li class="active" id="activityTab">
-						<?php echo $stats->get_shows_watched_summary(24); ?>
-                                                <?php echo $stats->get_movies_watched_summary(24); ?>
-						<?php echo $stats->get_newsfeed(24); ?>
+						<?php echo $stats->get_shows_watched_summary(72); ?>
+                                                <?php echo $stats->get_movies_watched_summary(72); ?>
+						<?php echo $stats->get_newsfeed(72); ?>
 				</li>
 				<li id="databaseTab">
                                     <fieldset>
@@ -127,6 +125,7 @@ $stats = new statistics();
 				</li>
                                 <li id="usersTab">
                                     <!--Add User-#################################################################### -->
+                                    <?php echo $stats->get_users(); ?>
                                     <div class="row">
                                         <div class="eleven columns">
                                                 <h6>Add a User</h6>
@@ -212,7 +211,7 @@ $stats = new statistics();
                                             </div>
                                         </div>
                                         <!--End of Email Users-#################################################################### -->
-                                    <?php echo $stats->get_users_active(24); ?>
+                                    <?php echo $stats->get_users_active(72); ?>
 				</li>
 				</ul>
 				</div>

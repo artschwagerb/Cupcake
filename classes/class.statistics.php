@@ -179,7 +179,7 @@ class statistics {
 	
 		function get_newsfeed_summary($hours) {
 		$dbstuff = new databee();
-			$res = $dbstuff->query("SELECT * FROM u_activity WHERE date_of_play > DATE_SUB( NOW(), INTERVAL $hours HOUR) ORDER BY date_of_play DESC LIMIT 5;");
+			$res = $dbstuff->query("SELECT * FROM u_activity WHERE date_of_play > DATE_SUB( NOW(), INTERVAL $hours HOUR) ORDER BY date_of_play DESC LIMIT 6;");
 			?>
 			<?php
 			if(mysql_num_rows($res) != 0){
@@ -189,24 +189,43 @@ class statistics {
 				$user = new user($row['user_id']);
 				?>
 					<div class="row">
-						<div class="row" style="margin-bottom: 5px; ">
-							<div class="twelve columns">
-								<span style="font-size: 12px; ">
-									<a href="show.php?id=<?php echo $episode->show->tvdb_series_id; ?>"><?php echo $episode->show->name; ?></a>
-								</span>
-								<br />
-								<span style="font-size: 10px; ">
-									<a href="player.php?id=<?php echo $episode->tvdb_episode_id; ?>"><?php echo $episode->name; ?></a>
-								</span>
-							</div>
+						<div class="row" style="margin-bottom: 0px; ">
+                                                    <div class="five columns">
+                                                            <span style="font-size: 12px; ">
+                                                                    <a href="season.php?id=<?php echo $episode->show->getFirstSeason()->tvdb_season_id; ?>">
+                                                                        <?php 
+                                                                            if (strlen($episode->show->name) > 45) { 
+                                                                                echo substr($episode->show->name, 0, 45)."..."; 
+                                                                            } else {
+                                                                                echo $episode->show->name; 
+                                                                            }
+                                                                        ?>
+                                                                    </a>
+                                                            </span>	
+                                                    </div>
+                                                    <div class="seven columns" style="text-align: right;">
+                                                        <span style="font-size: 9px; text-decoration: none;">
+                                                            <a class="clean" href="user.php?id=<?php echo $user->id; ?>"><?php echo ucfirst($user->displayname); ?></a>
+                                                        </span>
+                                                    </div>
 						</div>
 						<div class="row">
-							<div class="nine columns">		
-								<span style="font-size: 9px; text-decoration: none;"><a class="clean" href="user.php?id=<?php echo $user->id; ?>"><?php echo ucfirst($user->displayname); ?></a></span>
-							</div>
-							<div class="three columns">		
-								<span style="font-size: 9px; "><?php echo date('g:i a', strtotime(TIME_OFFSET, strtotime($row['date_of_play']))); ?></span>
-							</div>
+                                                    <div class="nine columns">
+                                                        <span style="font-size: 10px; ">
+                                                            <a href="player.php?id=<?php echo $episode->tvdb_episode_id; ?>">
+                                                                <?php 
+                                                                    if (strlen($episode->name) > 45) { 
+                                                                        echo substr($episode->name, 0, 45)."..."; 
+                                                                    } else {
+                                                                        echo $episode->name; 
+                                                                    }
+                                                                ?>
+                                                            </a>
+                                                        </span>
+                                                    </div>
+                                                    <div class="three columns" style="text-align: right;">		
+                                                        <span style="font-size: 9px; text-align: right;"><?php echo date('D g:i a', strtotime(TIME_OFFSET, strtotime($row['date_of_play']))); ?></span>
+                                                    </div>
 						</div>
 					</div>
 					<hr style="margin-top: 4px; margin-bottom: 4px;"/>
@@ -289,7 +308,7 @@ class statistics {
 	
 	function get_users_active($hours) {
 		$dbstuff = new databee();
-		$res = $dbstuff->query("SELECT id FROM u_user WHERE lastDate > DATE_SUB( NOW(), INTERVAL $hours HOUR);");
+		$res = $dbstuff->query("SELECT id FROM u_user WHERE lastDate > DATE_SUB( NOW(), INTERVAL $hours HOUR) ORDER BY lastDate ASC;");
 		
 		?>
 			<div class="row">
@@ -352,10 +371,87 @@ class statistics {
 		<?php
 	
 	}
+        
+        function get_users() {
+		$dbstuff = new databee();
+		$res = $dbstuff->query("SELECT id FROM u_user ORDER BY username ASC;");
+		
+		?>
+			<div class="row">
+				<div class="eight columns">
+					<h6>Users List</h6>
+				</div>
+				<div class="one column">
+					<?php echo mysql_num_rows($res); ?>
+				</div>
+				<div class="two columns">
+					Users
+				</div>
+				<div class="one column">
+							<p><a class="xsmall white nice button radius" href="javascript:;" onmousedown="toggleDiv('user_list',this);">v</a></p>
+				</div>
+			</div>
+			
+			<div id="user_list" style="display: none; " class="row">
+					<div class="panel">
+                                            <?php
+					if(mysql_num_rows($res) != 0){
+                                            ?>
+					<div class="row">
+						<div class="two columns">
+							<p><b>Username</b></p>
+						</div>
+						<div class="two columns">
+							<p><b>Display Name</b></p>
+						</div>
+						<div class="two columns">
+							<p><b>Status</b></p>
+						</div>
+                                                <div class="two columns">
+                                                        <p><b>Active</b></p>
+                                                </div>
+						<div class="four columns">
+							<p><b>Email</b></p>
+						</div>
+					</div>
+					<?php
+						while($row = mysql_fetch_assoc($res)) {
+						$user = new user($row['id']);
+						?>
+						<div class="row">
+							<div class="two columns">
+								<p><a href="user.php?id=<?php echo $user->id; ?>"><?php echo $user->username; ?></a></p>
+							</div>
+							<div class="two columns">
+								<p><?php echo $user->displayname; ?></p>
+							</div>
+							<div class="two columns">
+								<p><?php echo $user->get_level_name(); ?></p>
+							</div>
+                                                        <div class="two columns">
+								<p><?php echo date('F j, Y', strtotime(TIME_OFFSET, strtotime($user->lastDate))); ?></p>
+							</div>
+							<div class="four columns">
+								<p><?php echo $user->email; ?></p>
+							</div>
+						</div>
+						<?php
+						}
+					}else{
+                                            echo "No Entries Found...";
+                                        }
+                                            
+					?>
+					</div>
+			</div>
+			
+		<?php
+	
+	}
 	
 		function get_shows() {
 		$dbstuff = new databee();
-		$res = $dbstuff->query("SELECT tvdb_series_id FROM v_show;");
+		$res = $dbstuff->query("SELECT tvdb_series_id FROM v_show ORDER BY name;");
 		
 		?>
 			<div class="row">

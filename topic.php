@@ -32,7 +32,7 @@ $topic = new topic(0);
                     <div class="row">
                     <?php echo $topic->getAllTopics(); ?>
                     </div>
-                    <div class="row">
+                    <!--<div class="row">
                         <div class="six columns centered">
                             <ul class="pagination">
                                 <li class="unavailable"><a href="">&laquo;</a></li>
@@ -46,7 +46,7 @@ $topic = new topic(0);
                                 <li><a href="#">&raquo;</a></li>
                             </ul>    
                         </div>
-                    </div>
+                    </div>-->
 		</div>
                 
 		<div class="four columns">
@@ -70,14 +70,17 @@ $topic = new topic(0);
 }else{
 $topic = new topic(addslashes($_GET["id"]));
 ?>
+<script type="text/javascript">
+	$(document).ready(function() {
+		$(".thumb").thumbs();
+	});
+</script>
 <div class="row">
 			<div class="twelve columns">
-                            <div class="row">
-                                <div class="twelve columns">
-                                            <p><a href="topic.php">Discussions</a> &raquo; <?php echo $topic->name; ?></p>
-                                </div>
-                            </div>
-                            
+                                <ul class="breadcrumbs">
+                                    <li><a href="topic.php">Discussions</a></li>
+                                    <li class="current"><a href="#"><?php echo $topic->name; ?></a></li>
+                                </ul>
                             <div class="row">
                                 <div class="twelve columns">
                                             <h5><?php echo $topic->name; ?></h5>
@@ -91,7 +94,14 @@ $topic = new topic(addslashes($_GET["id"]));
                             </div>
                             <br />
                             <div class="row">
-                                <form name="comment_topic" method="post" class="nice">
+                                
+                            <dl class="tabs contained">
+                                <dd><a href="#comment" class="active">New Comment</a></dd>
+                                <dd><a href="#codesnippets">Code Snippets</a></dd>
+                            </dl>
+                            <ul class="tabs-content contained">
+                                <li class="active" id="commentTab">
+                                    <form name="comment_topic" method="post" class="nice">
 					<fieldset>
                                                 <input type="hidden" name="topic_id" value="<?php echo $topic->id; ?>" />
 
@@ -100,7 +110,16 @@ $topic = new topic(addslashes($_GET["id"]));
                                                 <input type="submit" name="comment-topic"  value="Submit" />
 								
 					</fieldset>
-				</form>
+                                    </form>
+                                </li>
+                                <li id="codesnippetsTab">
+                                    <script type="text/javascript" src="http://snipt.net/embed/a631dae255a19a7dad37987d234f3766"></script>
+                                </li>
+                                
+                            </ul>    
+                                
+                                
+                                
                             </div>
 			</div>
 </div>

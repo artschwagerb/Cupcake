@@ -158,46 +158,66 @@
                     $dbstuff = new databee();
 			$res = $dbstuff->query("SELECT id FROM c_comment WHERE user_id=$this->id;");
 			return mysql_num_rows($res);
-				
+                }
+                
+                function change_level($status_level){
+                    $dbstuff = new databee();
+                    $dbstuff->execute("UDPATE u_user SET status_id='".$status_level."' WHERE id='".$this->id."';");
+                }
+                
+                function change_display_name($newname){
+                    $dbstuff = new databee();
+                    $dbstuff->execute("UDPATE u_user SET displayname='".$newname."' WHERE id='".$this->id."';");
+                }
+                
+                function change_email($newemail){
+                    $dbstuff = new databee();
+                    $dbstuff->execute("UDPATE u_user SET email='".$newemail."' WHERE id='".$this->id."';");
+                }
+                
+                function add_premium($addtime = '+1 week'){
+                    $newpremex = date('y/m/d G:i:s',strtotime($addtime));
+                    $dbstuff = new databee();
+                    $dbstuff->execute("UDPATE u_user SET premium_ex_date='".$newpremex."' WHERE id='".$this->id."';");
                 }
 
 
-		/* public function getStatusTitle() {
-		switch ($this->active) {
-			case 0:
-				return "banned";
-				break;
-			case 1:
-				return "user";
-				break;
-			case 2:
-				echo "autistic";
-				break;
-			case 3:
-				echo "autistic";
-				break;
-			case 4:
-				echo "autistic";
-				break;
-			case 5:
-				echo "premium user";
-				break;
-			case 6:
-				echo "autistic";
-				break;
-			case 7:
-				echo "autistic";
-				break;
-			case 8:
-				return "moderator";
-				break;	
-			case 9:
-				return "admin";
-				break;
-			default:
-				echo "autistic";
-		}
-		} */
+		public function get_level_name() {
+                    switch ($this->status_id) {
+                            case 0:
+                                    return "Banned";
+                                    break;
+                            case 1:
+                                    return "Normal";
+                                    break;
+                            case 2:
+                                    echo "autistic";
+                                    break;
+                            case 3:
+                                    echo "autistic";
+                                    break;
+                            case 4:
+                                    echo "autistic";
+                                    break;
+                            case 5:
+                                    echo "Lifetime Premium";
+                                    break;
+                            case 6:
+                                    echo "autistic";
+                                    break;
+                            case 7:
+                                    echo "autistic";
+                                    break;
+                            case 8:
+                                    return "moderator";
+                                    break;	
+                            case 9:
+                                    return "Admin";
+                                    break;
+                            default:
+                                    echo "User";
+                    }
+		} 
 		
 	}
 	
