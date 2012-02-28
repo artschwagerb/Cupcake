@@ -47,7 +47,7 @@
                                                     <p style="text-align: left; font-size: 10px; margin-bottom: 0px;"><a class="clean" href="user.php?id=<?php echo $this->last_post->user->id; ?>"><?php echo ucfirst($this->last_post->user->displayname); ?></a></p>
                                             </div>
                                             <div class="four columns">
-                                                    <p style="text-align: right; font-size: 10px; margin-bottom: 0px;"><?php echo date('F j, Y, g:i a', strtotime(TIME_OFFSET, strtotime($this->last_post->date_added))); ?></p>
+                                                    <p style="text-align: right; font-size: 10px; margin-bottom: 0px;"><?php echo date('F j, Y, g:i a', strtotime(TIME_OFFSET, strtotime($this->date_modified))); ?></p>
                                             </div>
 					</div>
 				</div>
@@ -90,21 +90,12 @@
 		}
                 
                 public function add($name,$message) {
-			$dbstuff = new databee();
-			$dbstuff->execute("INSERT INTO c_topic (name, user_id, status, date_modified) VALUES ('".addSlashes($name)."', '".addSlashes($_SESSION['id_of_user'])."', '1', '".date('y-m-d G:i:s')."')");
-                        $res = $dbstuff->query("SELECT id FROM c_topic WHERE name='".addSlashes($name)."' AND user_id='".addSlashes($_SESSION['id_of_user'])."' ORDER BY date_created LIMIT 1;");
-
-			if(mysql_num_rows($res) != 0){
-				while($row = mysql_fetch_assoc($res)) {
-                                    $dbstuff->execute("INSERT INTO c_comment (user_id, message, status_id, type, parent_id) VALUES ('".addSlashes($_SESSION['id_of_user'])."', '".addSlashes($message)."', '1', '3', '".addSlashes($row['id'])."')");
-                                
-                                    $this->id = $row['id'];
-                                }
-                
-                        }        
+					$dbstuff = new databee();
+					$dbstuff->execute("INSERT INTO c_topic (name, user_id, status, date_modified) VALUES ('".addSlashes($name)."', '".addSlashes($_SESSION['id_of_user'])."', '1', '".date('y-m-d G:i:s')."')");
+                    $dbstuff->execute("INSERT INTO c_comment (user_id, message, status_id, type, parent_id) VALUES ('".addSlashes($_SESSION['id_of_user'])."', '".addSlashes($message)."', '1', '3', '".mysql_insert_id()."')");
                 }
                 
-                function get_Comment_Count(){
+                function get_Comment_Count() {
                     $dbstuff = new databee();
                     $res = $dbstuff->query("SELECT id FROM c_comment WHERE parent_id=".$this->id." AND type=3 and status_id=1 ORDER BY date_added;");
                     return mysql_num_rows($res);
