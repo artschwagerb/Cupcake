@@ -1,14 +1,13 @@
 -- phpMyAdmin SQL Dump
--- version 3.4.7
+-- version 3.3.7deb7
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Generation Time: Feb 27, 2012 at 04:37 PM
--- Server version: 5.5.17
--- PHP Version: 5.3.8
+-- Generation Time: Feb 27, 2012 at 01:19 PM
+-- Server version: 5.1.49
+-- PHP Version: 5.3.3-7+squeeze8
 
 SET SQL_MODE="NO_AUTO_VALUE_ON_ZERO";
-SET time_zone = "+00:00";
 
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
@@ -26,7 +25,6 @@ SET time_zone = "+00:00";
 -- Table structure for table `c_comment`
 --
 
-DROP TABLE IF EXISTS `c_comment`;
 CREATE TABLE IF NOT EXISTS `c_comment` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `user_id` int(11) NOT NULL DEFAULT '0',
@@ -37,7 +35,12 @@ CREATE TABLE IF NOT EXISTS `c_comment` (
   `type` int(11) NOT NULL,
   `parent_id` int(11) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=111 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `c_comment`
+--
+
 
 -- --------------------------------------------------------
 
@@ -45,14 +48,18 @@ CREATE TABLE IF NOT EXISTS `c_comment` (
 -- Table structure for table `c_reported`
 --
 
-DROP TABLE IF EXISTS `c_reported`;
 CREATE TABLE IF NOT EXISTS `c_reported` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `comment_id` int(11) NOT NULL,
   `user_id` int(11) NOT NULL,
   `status_id` int(11) NOT NULL DEFAULT '99',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=6 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `c_reported`
+--
+
 
 -- --------------------------------------------------------
 
@@ -60,14 +67,18 @@ CREATE TABLE IF NOT EXISTS `c_reported` (
 -- Table structure for table `c_status`
 --
 
-DROP TABLE IF EXISTS `c_status`;
 CREATE TABLE IF NOT EXISTS `c_status` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `name` text NOT NULL,
   `description` text NOT NULL,
   `active` int(11) NOT NULL DEFAULT '1',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=4 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `c_status`
+--
+
 
 -- --------------------------------------------------------
 
@@ -75,7 +86,6 @@ CREATE TABLE IF NOT EXISTS `c_status` (
 -- Table structure for table `c_topic`
 --
 
-DROP TABLE IF EXISTS `c_topic`;
 CREATE TABLE IF NOT EXISTS `c_topic` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `name` text NOT NULL,
@@ -84,7 +94,12 @@ CREATE TABLE IF NOT EXISTS `c_topic` (
   `status` int(11) NOT NULL COMMENT '0 for disabled, 1 for enabled',
   `date_modified` datetime NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=14 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `c_topic`
+--
+
 
 -- --------------------------------------------------------
 
@@ -92,7 +107,6 @@ CREATE TABLE IF NOT EXISTS `c_topic` (
 -- Table structure for table `menu`
 --
 
-DROP TABLE IF EXISTS `menu`;
 CREATE TABLE IF NOT EXISTS `menu` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `name` text NOT NULL,
@@ -101,7 +115,12 @@ CREATE TABLE IF NOT EXISTS `menu` (
   `status` int(1) NOT NULL DEFAULT '1',
   `premium` int(1) NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=7 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `menu`
+--
+
 
 -- --------------------------------------------------------
 
@@ -109,7 +128,6 @@ CREATE TABLE IF NOT EXISTS `menu` (
 -- Table structure for table `page`
 --
 
-DROP TABLE IF EXISTS `page`;
 CREATE TABLE IF NOT EXISTS `page` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `user_id` int(11) NOT NULL,
@@ -120,7 +138,14 @@ CREATE TABLE IF NOT EXISTS `page` (
   `sidebar` text NOT NULL,
   `permission_level` int(11) NOT NULL DEFAULT '1',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=3 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `page`
+--
+
+INSERT INTO `page` (`id`, `user_id`, `status_id`, `date_modified`, `title`, `body`, `sidebar`, `permission_level`) VALUES
+(1, 1, 1, '2012-02-27 13:14:57', '', 'LOL, HOMEPAGE GO', '', 1);
 
 -- --------------------------------------------------------
 
@@ -128,7 +153,6 @@ CREATE TABLE IF NOT EXISTS `page` (
 -- Table structure for table `u_activity`
 --
 
-DROP TABLE IF EXISTS `u_activity`;
 CREATE TABLE IF NOT EXISTS `u_activity` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `parent_id` int(11) NOT NULL,
@@ -136,7 +160,12 @@ CREATE TABLE IF NOT EXISTS `u_activity` (
   `date_of_play` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `type_id` int(11) NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=92 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `u_activity`
+--
+
 
 -- --------------------------------------------------------
 
@@ -144,14 +173,18 @@ CREATE TABLE IF NOT EXISTS `u_activity` (
 -- Table structure for table `u_premium`
 --
 
-DROP TABLE IF EXISTS `u_premium`;
 CREATE TABLE IF NOT EXISTS `u_premium` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `user_id` int(11) NOT NULL,
   `date_added` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `date_expires` datetime NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `u_premium`
+--
+
 
 -- --------------------------------------------------------
 
@@ -159,7 +192,6 @@ CREATE TABLE IF NOT EXISTS `u_premium` (
 -- Table structure for table `u_user`
 --
 
-DROP TABLE IF EXISTS `u_user`;
 CREATE TABLE IF NOT EXISTS `u_user` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `name` varchar(128) NOT NULL,
@@ -174,7 +206,14 @@ CREATE TABLE IF NOT EXISTS `u_user` (
   `last_ip` text NOT NULL,
   `premium_ex_date` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00' COMMENT 'Date of premium expiration',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=19 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `u_user`
+--
+
+INSERT INTO `u_user` (`id`, `name`, `email`, `username`, `password`, `confirmcode`, `joinDate`, `lastDate`, `displayname`, `status_id`, `last_ip`, `premium_ex_date`) VALUES
+(1, 'admin', '', 'admin', 'e229dca52dbfa50c12f80f746c8d6867', 'y', '2012-02-27 13:14:31', '0000-00-00 00:00:00', 'Administrator', 9, '', '0000-00-00 00:00:00');
 
 -- --------------------------------------------------------
 
@@ -182,7 +221,6 @@ CREATE TABLE IF NOT EXISTS `u_user` (
 -- Table structure for table `v_episode`
 --
 
-DROP TABLE IF EXISTS `v_episode`;
 CREATE TABLE IF NOT EXISTS `v_episode` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `author_id` int(11) NOT NULL DEFAULT '1',
@@ -198,7 +236,12 @@ CREATE TABLE IF NOT EXISTS `v_episode` (
   `tvdb_series_id` int(11) NOT NULL DEFAULT '0',
   `date_aired` text NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=926 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `v_episode`
+--
+
 
 -- --------------------------------------------------------
 
@@ -206,7 +249,6 @@ CREATE TABLE IF NOT EXISTS `v_episode` (
 -- Table structure for table `v_movie`
 --
 
-DROP TABLE IF EXISTS `v_movie`;
 CREATE TABLE IF NOT EXISTS `v_movie` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `author_id` int(11) NOT NULL DEFAULT '0',
@@ -219,7 +261,12 @@ CREATE TABLE IF NOT EXISTS `v_movie` (
   `votes_up` int(11) NOT NULL DEFAULT '0',
   `votes_down` int(11) NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=20 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `v_movie`
+--
+
 
 -- --------------------------------------------------------
 
@@ -227,7 +274,6 @@ CREATE TABLE IF NOT EXISTS `v_movie` (
 -- Table structure for table `v_season`
 --
 
-DROP TABLE IF EXISTS `v_season`;
 CREATE TABLE IF NOT EXISTS `v_season` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `author_id` int(11) NOT NULL DEFAULT '0',
@@ -238,7 +284,12 @@ CREATE TABLE IF NOT EXISTS `v_season` (
   `tvdb_season_id` int(11) NOT NULL DEFAULT '0',
   `tvdb_series_id` int(11) NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=62 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `v_season`
+--
+
 
 -- --------------------------------------------------------
 
@@ -246,7 +297,6 @@ CREATE TABLE IF NOT EXISTS `v_season` (
 -- Table structure for table `v_show`
 --
 
-DROP TABLE IF EXISTS `v_show`;
 CREATE TABLE IF NOT EXISTS `v_show` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `name` text NOT NULL,
@@ -266,8 +316,9 @@ CREATE TABLE IF NOT EXISTS `v_show` (
   `imdb_id` text NOT NULL,
   `runtime` text NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=17 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1;
 
-/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
-/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
-/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
+--
+-- Dumping data for table `v_show`
+--
+
