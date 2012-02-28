@@ -120,6 +120,7 @@
                         
 			//$randomint = rand(1, 10);
                         //$randomint == 7 || 
+			/*
 			if(strpos(strtolower($message),'gordon') !== FALSE || strpos(strtolower($message),'ramsay') !== FALSE || strpos(strtolower($message),'kitchen') !== FALSE) {
 				$dbstuff = new databee();
 				$dbstuff->execute("INSERT INTO c_comment (user_id, message, status_id, type, parent_id) VALUES ('0', '".addSlashes($this->bot_gordon_post())."', '1', '".$type_id."', '".addSlashes($parent_id)."')");
@@ -127,6 +128,7 @@
 				$dbstuff = new databee();
 				$dbstuff->execute("INSERT INTO c_comment (user_id, message, status_id, type, parent_id) VALUES ('8', '".addSlashes($this->bot_house_post())."', '1', '".$type_id."', '".addSlashes($parent_id)."')");
 			}
+			*/
 		}
 		
 		public function report() {
