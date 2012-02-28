@@ -13,7 +13,7 @@
 			
 			
 			$dbstuff = new databee();
-			$res = $dbstuff->query("SELECT * FROM c_comment, c_status WHERE c_comment.id=".$comment_id." and c_comment.status_id=c_status.id;");
+			$res = $dbstuff->query("SELECT * FROM c_comment WHERE c_comment.id=".$comment_id.";");
 			if(mysql_num_rows($res) != 0){
 				while($row = mysql_fetch_assoc($res)) {
 					$this->id = $comment_id;
