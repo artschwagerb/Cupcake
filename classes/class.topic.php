@@ -97,14 +97,14 @@
                 
                 function get_Comment_Count() {
                     $dbstuff = new databee();
-                    $res = $dbstuff->query("SELECT id FROM c_comment WHERE parent_id=".$this->id." AND type=3 and status_id=1 ORDER BY date_added;");
+                    $res = $dbstuff->query("SELECT id FROM c_comment WHERE parent_id=".$this->id." AND type=3 AND status_id=1 ORDER BY date_added;");
                     return mysql_num_rows($res);
                 }
                 
                 public function get_Last_Post() {
 			$dbstuff = new databee();
 
-			$res = $dbstuff->query("SELECT id FROM c_comment WHERE parent_id=".$this->id." AND type=3 and status_id=1 ORDER BY date_added DESC LIMIT 1;");
+			$res = $dbstuff->query("SELECT id FROM c_comment WHERE parent_id=".$this->id." AND type=3 AND status_id=1 ORDER BY date_added DESC LIMIT 1;");
 
 			if(mysql_num_rows($res) != 0){
 				while($row = mysql_fetch_assoc($res)) {
