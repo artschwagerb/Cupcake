@@ -1,7 +1,48 @@
 Installation Setup-
 
 /config.php - add username/password/database to the database section
-This file is responsible for database transactions
+This file is responsible for database transactions and settings.
+
+-----Contents of config.php
+<?php
+ini_set( "display_errors", true );
+//date_default_timezone_set( "America/Chicago" );  // http://www.php.net/manual/en/timezones.php
+
+define("SITE_PATH", "http://yourdomain/cupcake/");
+define("ALLOW_API", FALSE);
+
+define("DB_HOST", "localhost");
+define( "DB_USERNAME", "cup" );
+define( "DB_PASSWORD", "cups" );
+define( "DB_DATABASE", "cupcake" );
+
+define( "EMAIL_USERNAME", "noreply@yourdomain");
+define( "EMAIL_ADDRESS", "noreply@yourdomain");
+define( "EMAIL_PASSWORD", "passwordhere");
+define( "EMAIL_NAME", "Cupcake");
+define( "EMAIL_HOST", "smtp.gmail.com");
+
+
+define( "CLASS_PATH", "classes" );
+define( "INCLUDE_PATH", "include" );
+define( "TEMPLATE_PATH", "include/templates" );
+
+define( "HOMEPAGE_NUM_ITEMS", 5 );
+define( "TIME_OFFSET", "-6 hours");
+
+require_once( CLASS_PATH . "/class.user.php" );
+require_once( CLASS_PATH . "/class.databee.php" );
+require_once( CLASS_PATH . "/class.episode.php" );
+require_once( CLASS_PATH . "/class.season.php" );
+require_once( CLASS_PATH . "/class.show.php" );
+require_once( CLASS_PATH . "/class.movie.php" );
+require_once( CLASS_PATH . "/class.statistics.php" );
+require_once( CLASS_PATH . "/class.comment.php" );
+require_once( CLASS_PATH . "/class.topic.php" );
+require_once( CLASS_PATH . "/class.admin.php" );
+require_once( CLASS_PATH . "/class.snailmail.php");
+require_once( CLASS_PATH . "/class.page.php");
+?>
 
 /include/fg_membersite.php - add username/password/database to the database section
 This file is responsible for authentication
