@@ -23,30 +23,63 @@ if (!empty($_POST['comment-topic'])) {
         //echo '<META HTTP-EQUIV="Refresh" Content="0; URL=topic.php?id='.$topictochange->id.'">';
 }
 
+if (!empty($_POST['hide-comment'])) {
+	$commenttochange = new comment($_POST['comment-id']);
+	$commenttochange->hide();
+	
+}
+if (!empty($_POST['adminhide-comment'])) {
+	$commenttochange = new comment($_POST['comment-id']);
+	$commenttochange->admin_hide();
+	
+}
+if (!empty($_POST['adminshow-comment'])) {
+	$commenttochange = new comment($_POST['comment-id']);
+	$commenttochange->admin_show();
+	
+}
+if (!empty($_POST['show-comment'])) {
+	$commenttochange = new comment($_POST['comment-id']);
+	$commenttochange->show();
+	
+}
+if (!empty($_POST['report-comment'])) {
+	$commenttochange = new comment($_POST['comment-id']);
+	$commenttochange->report();
+	
+}
+if (!empty($_POST['acknowledge-comment'])) {
+	$commenttochange = new comment($_POST['comment-id']);
+	$commenttochange->acknowledge();
+	
+}
+if (!empty($_POST['report-problem'])) {
+	$commenttochange = new comment();
+	$commenttochange->add($_POST['problem']."     ---     ".$_POST['comment'],1,$episode->tvdb_episode_id);
+	
+}
+//--------------------
+
+
 if(empty($_GET["id"])){
+    if(empty($_GET["page"])){
+        $firsttopic = 0;
+        $page = 0;
+    }else{
+        $firsttopic = $_GET['page']*10;
+        $page = $_GET['page'];
+    }
 $topic = new topic(0);
 ?>
 
 	<div class="row">
 		<div class="eight columns">
                     <div class="row">
-                    <?php echo $topic->getAllTopics(); ?>
+                    <?php echo $topic->getAllTopics($firsttopic); ?>
                     </div>
-                    <!--<div class="row">
-                        <div class="six columns centered">
-                            <ul class="pagination">
-                                <li class="unavailable"><a href="">&laquo;</a></li>
-                                <li class="current"><a href="">1</a></li>
-                                <li><a href="#">2</a></li>
-                                <li><a href="#">3</a></li>
-                                <li><a href="#">4</a></li>
-                                <li class="unavailable"><a href="#123">&hellip;</a></li>
-                                <li><a href="#">12</a></li>
-                                <li><a href="#">13</a></li>
-                                <li><a href="#">&raquo;</a></li>
-                            </ul>    
-                        </div>
-                    </div>-->
+                    <div class="row">
+                    <?php echo $topic->getPages($page); ?>
+                    </div>
 		</div>
                 
 		<div class="four columns">

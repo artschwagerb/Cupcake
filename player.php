@@ -60,39 +60,40 @@ if (!empty($_POST['add-comment'])) {
 	//do something here;
         echo '<META HTTP-EQUIV="Refresh" Content="0; URL=player.php?id='.$episode->tvdb_episode_id.'">';
 }
-if (!empty($_POST['remove-comment'])) {
+if (!empty($_POST['hide-comment'])) {
 	$commenttochange = new comment($_POST['comment-id']);
 	$commenttochange->hide();
 	
-	//$dbstuff->execute("UPDATE c_comment SET status = 0 WHERE id = ".$_POST['comment-id']." and parent_id = ".$episode->tvdb_episode_id);
-   //do something here;
 }
-if (!empty($_POST['undelete-comment'])) {
+if (!empty($_POST['adminhide-comment'])) {
+	$commenttochange = new comment($_POST['comment-id']);
+	$commenttochange->admin_hide();
+	
+}
+if (!empty($_POST['adminshow-comment'])) {
+	$commenttochange = new comment($_POST['comment-id']);
+	$commenttochange->admin_show();
+	
+}
+if (!empty($_POST['show-comment'])) {
 	$commenttochange = new comment($_POST['comment-id']);
 	$commenttochange->show();
 	
-	//$dbstuff->execute("UPDATE c_comment SET status = 1 WHERE id = ".$_POST['comment-id']." and parent_id = ".$episode->tvdb_episode_id);
-   //do something here;
 }
 if (!empty($_POST['report-comment'])) {
 	$commenttochange = new comment($_POST['comment-id']);
 	$commenttochange->report();
 	
-	//$dbstuff->execute("UPDATE c_comment SET status = 2 WHERE id = ".$_POST['comment-id']." and parent_id = ".$episode->tvdb_episode_id);
-   //do something here;
 }
 if (!empty($_POST['acknowledge-comment'])) {
 	$commenttochange = new comment($_POST['comment-id']);
 	$commenttochange->acknowledge();
 	
-	//$dbstuff->execute("UPDATE c_comment SET status = 1 WHERE id = ".$_POST['comment-id']." and parent_id = ".$episode->tvdb_episode_id);
-   //do something here;
 }
 if (!empty($_POST['report-problem'])) {
 	$commenttochange = new comment();
 	$commenttochange->add($_POST['problem']."     ---     ".$_POST['comment'],1,$episode->tvdb_episode_id);
-	//$dbstuff->execute("INSERT INTO c_comment (user_id, message, status, type, parent_id) VALUES ('".addSlashes($fgmembersite->UserID())."', '".addSlashes($_POST['message'])."', '1', '0', '".addSlashes($episode->tvdb_episode_id)."')");
-	//do something here;
+	
 }
 //--------------------
 //echo "<br />";

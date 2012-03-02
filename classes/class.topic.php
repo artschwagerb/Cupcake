@@ -56,11 +56,11 @@
 			<?php
 		}
                 
-                public function getAllTopics() {
+                public function getAllTopics($firsttopic = 0) {
                 $dbstuff = new databee();
 
                     //$res = $dbstuff->query("select id, date_created, (select max(date_added) from c_comment where parent_id = t.id ) as moddate  from c_topic t where id in (Select parent_id From c_comment GROUP BY parent_id) order by (select max(date_added) from c_comment where parent_id = t.id ) DESC");
-                    $res = $dbstuff->query("select id from c_topic WHERE status = 1 ORDER BY date_modified DESC;");
+                    $res = $dbstuff->query("select id from c_topic WHERE status=1 ORDER BY date_modified DESC LIMIT ".$firsttopic.", 10;");
                     if(mysql_num_rows($res) != 0){
                         while($row = mysql_fetch_assoc($res)) {
                             
@@ -71,11 +71,41 @@
                     
                     
                 }
+                
+                public function getPages($currentpage = 0) {
+                $dbstuff = new databee();
+
+                    //$res = $dbstuff->query("select id, date_created, (select max(date_added) from c_comment where parent_id = t.id ) as moddate  from c_topic t where id in (Select parent_id From c_comment GROUP BY parent_id) order by (select max(date_added) from c_comment where parent_id = t.id ) DESC");
+                    $res = $dbstuff->query("select id from c_topic ORDER BY date_modified DESC;");
+                    if(mysql_num_rows($res) != 0){
+                        ?>
+                        <div class="row">
+                            <div class="six columns centered">
+                                <ul class="pagination">
+                                    
+                                    <li class="unavailable"><a href="<?php if($currentpage == 0){ echo '#'; }else{ echo 'topic.php?page='.($currentpage-1);} ?>">&laquo;</a></li>
+                        <?php
+                        for ($i=0; $i<=((mysql_num_rows($res)/10)-1); $i++) { 
+                            
+                            if($i == $currentpage){
+                            echo "<li class='current'><a href='?page=".$i."'>".$i."</a></li>";
+                            }else{
+                            echo "<li><a href='?page=".$i."'>".$i."</a></li>";
+                            }
+                        }; 
+                        ?>
+                                    <li><a href="<?php if($currentpage == mysql_num_rows($res)/10){ echo '#'; }else{ echo 'topic.php?page='.($currentpage+1);} ?>">&raquo;</a></li>
+                                </ul>    
+                            </div>
+                        </div>            
+                        <?php                    
+                    }
+                }
 		
 		public function getComments() {
 			$dbstuff = new databee();
 
-			$res = $dbstuff->query("SELECT id FROM c_comment WHERE parent_id=".$this->id." AND type=3 and status_id=1 ORDER BY date_added;");
+			$res = $dbstuff->query("SELECT id FROM c_comment WHERE parent_id=".$this->id." AND type=3 ORDER BY date_added;");
 
 			if(mysql_num_rows($res) != 0){
 				while($row = mysql_fetch_assoc($res)) {

@@ -33,23 +33,35 @@
 			<div class="row">
 				<div class="twelve columns">
 					<div class="row">
-						<div class="four columns">
+						<div class="three columns">
 							<p><a href="user.php?id=<?php echo $this->user->id; ?>"><?php echo ucfirst($this->user->displayname); ?></a></p>
 						</div>
-						<div class="three columns" style="display: table-cell; text-align: right;">
+						<div class="four columns" style="display: table-cell; text-align: right;">
 							<form method="post" class="none" style="margin-bottom: 0px; ">
 							<input type="hidden" name="comment-id" value="<?php echo $this->id; ?>"/>
 							<?php 
-							if($_SESSION['id_of_user'] == $this->user->id or $_SESSION['status_of_user'] == 9) {
+							if($_SESSION['id_of_user'] == $this->user->id) {
 								if($this->status==1) {
 									?>
-										<!--<input type="submit" name="hide-comment" value="Hide" class="xsmall white nice button radius"/>-->
+										<input type="submit" name="hide-comment" value="Hide" class="xsmall white nice button radius"/>
 									<?php 
 								} elseif($this->status==0) {
 									?>
-										<!--<input type="submit" name="show-comment" value="Show" class="xsmall orange nice button radius"/>-->
+										<input type="submit" name="show-comment" value="Show" class="xsmall orange nice button radius"/>
+									<?php 
+								} 
+                                                        }
+                                                        if($_SESSION['status_of_user'] == 9) {
+                                                                if($this->status!=1 && $_SESSION['id_of_user'] != $this->user->id) {
+									?>
+										<input type="submit" name="adminshow-comment" value="# Show" class="xsmall black nice button radius"/>
 									<?php 
 								}
+                                                                if($this->status!=3 && $_SESSION['id_of_user'] != $this->user->id) {
+                                                                        ?>
+										<input type="submit" name="adminhide-comment" value="# Delete" class="xsmall black nice button radius"/>
+									<?php 
+                                                                }
 							}
 							if($this->get_report_count() == 2) {
 								if($_SESSION['status_of_user'] == 9) {
@@ -75,12 +87,28 @@
 					</div>
 					<div class="row">
 						<?php 
-						if($this->status==0) {
-							echo '<p style="color: #C0C0C0; ">This message has been hidden at the request of the user.';
+                                                if($this->status==1){
+                                                        echo "<p>".nl2br(strip_tags($this->message, '<p><a><img><span>'))."</p>";
+                                                }elseif($this->status==0) {
+                                                        echo '<p style="color: #C0C0C0; ">This comment has been hidden at the request of the user.</p>';
+                                                        if($_SESSION['id_of_user'] == $this->user->id or $_SESSION['status_of_user'] == 9) {
+                                                            //Show Message to Admins and original user
+                                                            echo "<p>".nl2br(strip_tags($this->message, '<p><a><img><span>'))."</p>";
+                                                        }
 						}elseif($this->status==2){
-							echo '<p style="color: #C0C0C0; ">This message has been hidden at the request of the user.';
-						}else {
-							echo "<p>".nl2br(strip_tags($this->message, '<p><a><img><span>'))."</p>";
+							echo '<p style="color: #C0C0C0; ">This comment has been reported.</p>';
+                                                        if($_SESSION['id_of_user'] == $this->user->id or $_SESSION['status_of_user'] == 9) {
+                                                            //Show Message to Admins and original user
+                                                            echo "<p>".nl2br(strip_tags($this->message, '<p><a><img><span>'))."</p>";
+                                                        }
+						}elseif($this->status==3) {
+                                                    echo '<p style="color: #C0C0C0; ">This comment has been hidden by an administrator.</p>';
+                                                        if($_SESSION['status_of_user'] == 9) {
+                                                            //Show Message to Adminss
+                                                            echo "<p>".nl2br(strip_tags($this->message, '<p><a><img><span>'))."</p>";
+                                                        }
+                                                }else{
+							echo '<p style="color: #C0C0C0; ">Thieves came in the night, and stole this comment.</p>';
 						} 
 							
 						?></p>
@@ -100,14 +128,28 @@
 		}
 		
 		public function hide() {
-			if($_SESSION['id_of_user'] == $this->user->id) {
+			if($_SESSION['id_of_user'] == $this->user->id || $_SESSION['status_of_user'] == 9) {
 				$dbstuff = new databee();
 				$dbstuff->execute("UPDATE c_comment SET status_id = 0 WHERE id = ".$this->id);
 			}
 		}
+                
+                public function admin_hide() {
+			if($_SESSION['status_of_user'] == 9) {
+				$dbstuff = new databee();
+				$dbstuff->execute("UPDATE c_comment SET status_id = 3 WHERE id = ".$this->id);
+			}
+		}
+                
+                public function admin_show() {
+			if($_SESSION['status_of_user'] == 9) {
+				$dbstuff = new databee();
+				$dbstuff->execute("UPDATE c_comment SET status_id = 1 WHERE id = ".$this->id);
+			}
+		}
 		
 		public function show() {
-			if($_SESSION['id_of_user'] == $this->user->id) {
+			if($_SESSION['id_of_user'] == $this->user->id || $_SESSION['status_of_user'] == 9) {
 				$dbstuff = new databee();
 				$dbstuff->execute("UPDATE c_comment SET status_id = 1 WHERE id = ".$this->id);
 			}
@@ -134,6 +176,7 @@
 		public function report() {
 			$dbstuff = new databee();
 			$dbstuff->execute("INSERT INTO c_reported (comment_id, user_id, status_id) VALUES ('".$this->id."', '".addSlashes($_SESSION['id_of_user'])."', '2')");
+                        $dbstuff->execute("UPDATE c_comment SET status_id = 2 WHERE id = ".$this->id);
 		}
 		
 		public function acknowledge() {
