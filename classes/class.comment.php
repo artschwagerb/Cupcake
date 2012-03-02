@@ -37,7 +37,7 @@
 							<p><a href="user.php?id=<?php echo $this->user->id; ?>"><?php echo ucfirst($this->user->displayname); ?></a></p>
 						</div>
 						<div class="four columns" style="display: table-cell; text-align: right;">
-							<form method="post" class="none" style="margin-bottom: 0px; ">
+							<form method="post" class="none" style="text-align: left; margin-bottom: 0px; ">
 							<input type="hidden" name="comment-id" value="<?php echo $this->id; ?>"/>
 							<?php 
 							if($_SESSION['id_of_user'] == $this->user->id) {

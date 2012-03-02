@@ -137,7 +137,9 @@ if (!empty($_POST['report-problem'])) {
 				<div class="row">
                                     <center>
                                     <?php
-                                        echo "Server: '".$episode->server."'";
+                                        if(ALLOW_API && $episode->server != '') {
+                                            echo "Server: '".$episode->server."'";
+                                        }
                                         if($episode->server == "notfound" || $episode->server == 'localhost'){
                                             if(!file_exists($episode->filename)){
                                             echo "<p>Unable to find Episode</p>";
