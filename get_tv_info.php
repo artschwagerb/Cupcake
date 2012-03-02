@@ -20,12 +20,13 @@ exit;
 
 $file = "http://www.thetvdb.com/api/189812DEFDFC361E/series/".$seriesid."/all/en.xml";
 
-print "<p>$file</p>";
+//print "<p>$file</p>";
 				
 //Process Local XML files
 $xmlcontent=curl($file) or trigger_error("Sorry but an error occured gathering information for this episode from thetvdb.com  Please try again shortly by refreshing this page");
 	
 $xml = new SimpleXMLElement($xmlcontent);
+        echo "<p>".$xml->Series[0]->SeriesName."</p>";
 	// if($xml->Series != '') {
 		// $series_id= $xml->Series[0]->id;
 		// $series_name= $xml->Series[0]->SeriesName;
@@ -118,8 +119,34 @@ foreach ($xml->Episode as $Episode) {
 				if(file_exists($seriespath.sprintf("%0"."2"."d",$Episode->SeasonNumber,2)."/".sprintf("%0"."2"."d",$Episode->EpisodeNumber,2).".mp4")){
 					//episode file exists, add to db
 					echo "Episode ".$Episode->EpisodeNumber." - Created ".$Episode->id." - '".$Episode->EpisodeName."'<br />"; 
-					$dbstuff->execute("INSERT INTO v_episode (author_id, name, number, description, date_added, date_aired, rating, tvdb_episode_id, tvdb_season_id, tvdb_series_id) VALUES ('"."0"."', '".addSlashes($Episode->EpisodeName)."', '".addSlashes($Episode->EpisodeNumber)."', '".addSlashes($Episode->Overview)."', '".date("Y-m-d")."', '".$Episode->FirstAired."', '".addSlashes($Episode->Rating)."', '".addSlashes($Episode->id)."', '".addSlashes($Episode->seasonid)."', '".addSlashes($Episode->seriesid)."')");	
-				}
+					$dbstuff->execute("INSERT INTO v_episode (author_id, name, number, description, date_added, date_aired, rating, tvdb_episode_id, tvdb_season_id, tvdb_series_id, server_name) VALUES ('"."0"."', '".addSlashes($Episode->EpisodeName)."', '".addSlashes($Episode->EpisodeNumber)."', '".addSlashes($Episode->Overview)."', '".date("Y-m-d")."', '".$Episode->FirstAired."', '".addSlashes($Episode->Rating)."', '".addSlashes($Episode->id)."', '".addSlashes($Episode->seasonid)."', '".addSlashes($Episode->seriesid)."', '".addSlashes("localhost")."')");	
+				}else{
+                                    //Looking on remote servers
+                                    $dbstuff = new databee();
+                                    $res = $dbstuff->query("SELECT * FROM server WHERE status_id=1;");
+                                    if(mysql_num_rows($res) != 0){
+                                        while($row = mysql_fetch_assoc($res)) {
+                                            //Each Server
+                                            $json = file_get_contents($row['address']."api.episode.php?ep_id=".$Episode->id."&type=json&api=brianrocks123");
+                                            $data = json_decode($json);
+                                            if ($data){
+                                                $hostname = $data->episodes[0]->episode->server_name;
+                                            }else{
+                                                $hostname = "notfound";
+                                            }
+                                            
+                                            if ($hostname == "localhost"){
+                                                //Remote Server has the file, use it
+                                                //Change the server we know
+                                                $dbstuff->execute("INSERT INTO v_episode (author_id, name, number, description, date_added, date_aired, rating, tvdb_episode_id, tvdb_season_id, tvdb_series_id, server_name) VALUES ('"."0"."', '".addSlashes($Episode->EpisodeName)."', '".addSlashes($Episode->EpisodeNumber)."', '".addSlashes($Episode->Overview)."', '".date("Y-m-d")."', '".$Episode->FirstAired."', '".addSlashes($Episode->Rating)."', '".addSlashes($Episode->id)."', '".addSlashes($Episode->seasonid)."', '".addSlashes($Episode->seriesid)."', '".$row['address']."')");
+                                                break;
+                                            }else{
+                                                $dbstuff->execute("INSERT INTO v_episode (author_id, name, number, description, date_added, date_aired, rating, tvdb_episode_id, tvdb_season_id, tvdb_series_id, server_name) VALUES ('"."0"."', '".addSlashes($Episode->EpisodeName)."', '".addSlashes($Episode->EpisodeNumber)."', '".addSlashes($Episode->Overview)."', '".date("Y-m-d")."', '".$Episode->FirstAired."', '".addSlashes($Episode->Rating)."', '".addSlashes($Episode->id)."', '".addSlashes($Episode->seasonid)."', '".addSlashes($Episode->seriesid)."', 'notfound')");
+                                            }
+                                        }
+                                    }
+                                }
+                                    
 				// echo $Episode->seriesid; // Episode Series
 				// echo "<br />";
 				// echo $Episode->id; // ID of Episode
@@ -142,8 +169,31 @@ foreach ($xml->Episode as $Episode) {
 				// echo "<br />";
 			} else {
 			//Episode already in database, updating
-				echo "Episode ".$Episode->EpisodeNumber." - Updated - ".$Episode->id." - '".$Episode->EpisodeName."'<br />";
-				$dbstuff->execute("UPDATE v_episode SET author_id='0', name='".addSlashes($Episode->EpisodeName)."', number='".addSlashes($Episode->EpisodeNumber)."', description='".addSlashes($Episode->Overview)."', date_added='".addSlashes(date("Y-m-d"))."', date_aired='".addSlashes($Episode->FirstAired)."', rating='".addSlashes($Episode->Rating)."', tvdb_episode_id='".addSlashes($Episode->id)."', tvdb_series_id='".addSlashes($Episode->seriesid)."', tvdb_season_id='".addSlashes($Episode->seasonid)."' WHERE tvdb_episode_id='".addSlashes($Episode->id)."'");	
+                            if(file_exists($seriespath.sprintf("%0"."2"."d",$Episode->SeasonNumber,2)."/".sprintf("%0"."2"."d",$Episode->EpisodeNumber,2).".mp4")){
+                                echo "Episode ".$Episode->EpisodeNumber." - Updated - ".$Episode->id." - '".$Episode->EpisodeName."'<br />";
+                                $dbstuff->execute("UPDATE v_episode SET author_id='0', name='".addSlashes($Episode->EpisodeName)."', number='".addSlashes($Episode->EpisodeNumber)."', description='".addSlashes($Episode->Overview)."', date_added='".addSlashes(date("Y-m-d"))."', date_aired='".addSlashes($Episode->FirstAired)."', rating='".addSlashes($Episode->Rating)."', tvdb_episode_id='".addSlashes($Episode->id)."', tvdb_series_id='".addSlashes($Episode->seriesid)."', tvdb_season_id='".addSlashes($Episode->seasonid)."', server_name='".addSlashes("localhost")."' WHERE tvdb_episode_id='".addSlashes($Episode->id)."'");
+                            }else{
+                                //Looking on remote servers
+                                $dbstuff = new databee();
+                                $res = $dbstuff->query("SELECT * FROM server WHERE status_id=1;");
+                                if(mysql_num_rows($res) != 0){
+                                    while($row = mysql_fetch_assoc($res)) {
+                                        //Each Server
+                                        $json = file_get_contents($row['address']."api.episode.php?ep_id=".$Episode->id."&type=json&api=brianrocks123");
+                                        $data = json_decode($json);
+                                        $hostname = $data->episodes[0]->episode->server_name;
+                                        if ($hostname == "localhost"){
+                                            //Remote Server has the file, use it
+                                            //Change the server we know
+                                            echo "Episode ".$Episode->EpisodeNumber." - Updated - ".$Episode->id." - '".$Episode->EpisodeName."'<br />";
+                                            $dbstuff->execute("UPDATE v_episode SET author_id='0', name='".addSlashes($Episode->EpisodeName)."', number='".addSlashes($Episode->EpisodeNumber)."', description='".addSlashes($Episode->Overview)."', date_added='".addSlashes(date("Y-m-d"))."', date_aired='".addSlashes($Episode->FirstAired)."', rating='".addSlashes($Episode->Rating)."', tvdb_episode_id='".addSlashes($Episode->id)."', tvdb_series_id='".addSlashes($Episode->seriesid)."', tvdb_season_id='".addSlashes($Episode->seasonid)."', server_name='".addSlashes($row['address'])."' WHERE tvdb_episode_id='".addSlashes($Episode->id)."'");
+                                            break;
+                                        }
+                                    }
+                                }
+                                
+                            }
+					
 				
 				if(file_exists($seriespath.sprintf("%0"."2"."d",$Episode->SeasonNumber,2)."/".sprintf("%0"."2"."d",$Episode->EpisodeNumber,2).".mp4")){
 					if(!file_exists("images/shows/previews/".$Episode->id.".jpg")){

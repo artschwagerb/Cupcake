@@ -195,18 +195,31 @@
 			<?php
 			foreach ( $seasons as $season ) {
 				if(file_exists($this->filepath.sprintf("%0"."2"."d",$season->number,2))) {
-					if($season->tvdb_season_id == $currentseason) {
-					?>
-						<a class="small blue nice button radius " title="Season <?php echo $season->number; ?>" href="season.php?id=<?php echo $season->tvdb_season_id; ?>"><?php echo $season->number; ?></a>&nbsp
-							
-					<?php
-					} else {
-					?>
-						<a class="small white nice button radius " title="Season <?php echo $season->number; ?>" href="season.php?id=<?php echo $season->tvdb_season_id; ?>"><?php echo $season->number; ?></a>&nbsp
-							
-					<?php
-					}
+                                    if($season->tvdb_season_id == $currentseason) {
+                                    ?>
+                                            <a class="small blue nice button radius " title="Season <?php echo $season->number; ?>" href="season.php?id=<?php echo $season->tvdb_season_id; ?>"><?php echo $season->number; ?></a>&nbsp
+
+                                    <?php
+                                    } else {
+                                    ?>
+                                            <a class="small white nice button radius " title="Season <?php echo $season->number; ?>" href="season.php?id=<?php echo $season->tvdb_season_id; ?>"><?php echo $season->number; ?></a>&nbsp
+
+                                    <?php
+                                    }
 				}
+                                elseif(ALLOW_API){
+                                    if($season->tvdb_season_id == $currentseason) {
+                                    ?>
+                                            <a class="small blue nice button radius " title="Season <?php echo $season->number; ?>" href="season.php?id=<?php echo $season->tvdb_season_id; ?>"><?php echo $season->number; ?></a>&nbsp
+
+                                    <?php
+                                    } else {
+                                    ?>
+                                            <a class="small red nice button radius " title="Season <?php echo $season->number; ?>" href="season.php?id=<?php echo $season->tvdb_season_id; ?>"><?php echo $season->number; ?></a>&nbsp
+
+                                    <?php
+                                    }
+                                }
 			}
 			?>
 			</div>
@@ -224,7 +237,7 @@
 				
 			}
 			foreach ( $seasons as $season ) {
-				if(file_exists($this->filepath.sprintf("%0"."2"."d",$season->number,2))) {
+				if(file_exists($this->filepath.sprintf("%0"."2"."d",$season->number,2)) || TRUE) {
 					return $season;
 				}
 			}

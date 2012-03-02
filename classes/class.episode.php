@@ -14,6 +14,7 @@
 		var $rating;
 		var $date_aired;
                 var $viewed;
+                var $server;
 		
 		function __construct($epi_id = 0) {
 			
@@ -29,6 +30,8 @@
 					$this->name = $row['name'];
 					$this->number = $row['number'];
 					$this->filename = $this->show->filepath.sprintf("%0"."2"."d",$this->season->number,2)."/".sprintf("%0"."2"."d",$this->number,2).".mp4";
+                                        $this->server = "";
+                                        //$this->server = $this->get_Server();
 					$this->description = $row['description'];
 					$this->active = $row['active'];
 					$this->hits = $row['hits'];
@@ -36,7 +39,7 @@
 					$this->date_aired = $row['date_aired'];
 					$this->rating = $row['rating'];
                                         $this->viewed = $this->check_Viewed();
-				}
+				}  
 			}
 		}
 		
@@ -55,6 +58,8 @@
 					$this->name = $row['name'];
 					$this->number = $row['number'];
 					$this->filename = $this->show->filepath.sprintf("%0"."2"."d",$this->season->number,2)."/".sprintf("%0"."2"."d",$this->number,2).".mp4";
+                                        $this->server = "";
+                                        //$this->server = $this->get_Server();
 					$this->description = $row['description'];
 					$this->active = $row['active'];
 					$this->hits = $row['hits'];
@@ -82,6 +87,8 @@
 					$this->name = $row['name'];
 					$this->number = $row['number'];
 					$this->filename = $this->show->filepath.sprintf("%0"."2"."d",$this->season->number,2)."/".sprintf("%0"."2"."d",$this->number,2).".mp4";
+                                        $this->server = "";
+                                        //$this->server = $this->get_Server();
 					$this->description = $row['description'];
 					$this->active = $row['active'];
 					$this->hits = $row['hits'];
@@ -168,8 +175,8 @@
                     }
                     
                 }
-		
-		public function log_View() {
+                
+                public function log_View() {
 			$dbstuff = new databee();
 			$res = $dbstuff->query("SELECT * FROM u_activity WHERE parent_id='".$this->tvdb_episode_id."' and type_id='1' and DATE(date_of_play) = CURDATE() and user_id ='".$_SESSION['id_of_user']."';");
 			if(mysql_num_rows($res) == 0){
@@ -178,8 +185,67 @@
 			}
 		
 		}
-		
-		
+                
+//		public function get_API_Server_List() {
+//                    //Randomize
+//			$dbstuff = new databee();
+//			$res = $dbstuff->query("SELECT * FROM server WHERE status_id=0;");
+//                        $apiservers = array();
+//			if(mysql_num_rows($res) != 0){
+//                            while($row = mysql_fetch_assoc($res)) {
+//				//Only log a view if they dont already have a play of this episode today
+//				$apiservers[] = $row['address'];
+//                            }
+//			}
+//                        return $apiservers;
+//		
+//		}
+                
+                public function change_Server($address) {
+                    //Randomize
+			$dbstuff = new databee();
+			$res = $dbstuff->query("SELECT * FROM v_episode WHERE tvdb_episode_id='".addSlashes($this->tvdb_episode_id)."';");
+			if(mysql_num_rows($res) != 0){
+                            while($row = mysql_fetch_assoc($res)) {
+				//Only log a view if they dont already have a play of this episode today
+                                $dbstuff->execute("UPDATE v_episode SET server_name='".addSlashes($address)."' WHERE tvdb_episode_id='".addSlashes($this->tvdb_episode_id)."'");
+                            }
+			}
+		}
+                
+                public function get_Server() {
+                    if(file_exists($this->filename)){
+                        //Found Local Copy
+                        $this->change_Server("localhost");
+                        return "";
+                    }else{
+                        //Looking on remote servers
+                        $dbstuff = new databee();
+			$res = $dbstuff->query("SELECT * FROM server WHERE status_id=1;");
+			if(mysql_num_rows($res) != 0){
+                            while($row = mysql_fetch_assoc($res)) {
+                                //Each Server
+                                $json = file_get_contents($row['address']."api.episode.php?ep_id=".$this->tvdb_episode_id."&type=json&api=brianrocks123");
+                                if ($json!="notfound"){
+                                $data = json_decode($json);
+                              
+                                $hostname = $data->episodes[0]->episode->server_name;
+                                if ($hostname == "localhost"){
+                                    //Remote Server has the file, use it
+                                    //Change the server we know
+                                    $this->change_Server($row['address']);
+                                    return $row['address'];
+                                }
+                                }
+                            }
+                        }     
+                        //Not Found
+                        $this->change_Server("notfound");
+                        return "notfound";
+                    
+                    
+                    }
+                }
 	}
 	
 ?>

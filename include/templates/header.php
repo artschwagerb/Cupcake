@@ -10,11 +10,11 @@
 	<meta name="viewport" content="width=device-width" />
 	<LINK REL="SHORTCUT ICON" HREF="images/favicon.ico">
 	<title>Cupcake</title>
-  
+          
 	<!-- Included CSS Files -->
+        <link rel="stylesheet" href="stylesheets/randomness.css">
 	<link rel="stylesheet" href="stylesheets/foundation.css">
 	<link rel="stylesheet" href="stylesheets/app.css">
-	<link rel="stylesheet" href="stylesheets/randomness.css">
         <link rel="stylesheet" href="stylesteets/orbit.css">
 	<!--[if lt IE 9]>
 		<link rel="stylesheet" href="stylesheets/ie.css">
@@ -88,8 +88,15 @@ $(document).ready(function() {
 
   var _gaq = _gaq || [];
   _gaq.push(['_setAccount', 'UA-29123919-1']);
-  _gaq.push(['_setDomainName', 'cupcake.coral.feralhosting.com']);
+  _gaq.push(['_setDomainName', 'cupcakesfor.me']);
   _gaq.push(['_trackPageview']);
+  
+  _gaq.push(['_setCustomVar',
+      1,             // This custom var is set to slot #1.  Required parameter.
+      'User ID',   // The name of the custom variable.  Required parameter.
+      '<?php echo $_SESSION['id_of_user']?>',      // Sets the value of "User Type" to "Member" or "Visitor" depending on status.  Required parameter.
+       2             // Sets the scope to session-level.  Optional parameter.
+   ]);
 
   (function() {
     var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
@@ -99,6 +106,15 @@ $(document).ready(function() {
 
 </script>
 
+
+<link href="stylesheets/skin/blue.monday/jplayer.blue.monday.css" rel="stylesheet" type="text/css" />
+<link rel="stylesheet" href="stylesteets/jquery.thumbs.css">
+<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.6/jquery.min.js"></script>
+<script type="text/javascript" src="javascripts/jquery.jplayer.min.js"></script>
+<script type="text/javascript" src="javascripts/jplayer.playlist.min.js"></script>
+<script src="javascripts/jquery.thumbs.js" type="text/javascript"></script>
+<script src="javascripts/jquery.jeditable.mini.js" type="text/javascript"></script>
+
 <script src="video-js/video.js" type="text/javascript" charset="utf-8"></script>
 <link rel="stylesheet" href="video-js/video-js.css" type="text/css" media="screen" title="Video JS" charset="utf-8">
 <!-- VideoJS Optional Skins -->
@@ -106,7 +122,24 @@ $(document).ready(function() {
 <script type="text/javascript">
     // Add VideoJS to all video tags on the page when the DOM is ready
     VideoJS.setupAllWhenReady();
-</script>	
+</script>
+
+<?php
+        //beginning of page load time
+        //$starttime = microtime();
+        $startarray = explode(" ", microtime());
+        $starttime = $startarray[1] + $startarray[0];
+        ?>
+
+<?php
+if(empty($_GET["css"])){
+//normal view
+}else{
+//add user's css
+    echo '<link rel="stylesheet" href="'.$_GET['css'].'">';
+}
+?>
+
 </head>
 <body>
 	<!-- container -->

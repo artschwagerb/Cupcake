@@ -11,6 +11,20 @@ if(!$fgmembersite->CheckLogin())
 include "config.php";
 include TEMPLATE_PATH."/header.php";
 
+//Process update-series form-###############################################################################################
+if (!empty($_POST['update-series'])) {
+        ?>
+        <script type='text/javascript'> $(document).ready(function() { $('#update_Series_Modal').reveal(); }); </script>
+        <div id="update_Series_Modal" class="reveal-modal">
+            <?php include(SITE_PATH.'get_tv_info_new.php?series_id='.$_POST['series_id'].'&auth_id='.$_POST['auth_id']); ?>
+            <a class="close-reveal-modal">&#215;</a>
+            
+        </div>
+        <?php
+}
+//End of update-series form-###############################################################################################
+
+
 if(empty($_GET["id"])){
 echo "Season id not provided.";
 }else{
@@ -113,7 +127,12 @@ $season->getEpisodes($fgmembersite->CheckPremium());
 				?>
 				<br />
 				<br />
-				<p><a target="_blank" href="get_tv_info.php?id=<?php echo $season->show->tvdb_series_id; ?>&authid=<?php echo $fgmembersite->UserID(); ?>" class="xsmall black nice button radius ">Update Series</a></p>
+                                <form name="seriesscript" method="post" class="nice">
+                                    <input type="hidden" name="auth_id" value="<?php echo $fgmembersite->UserID(); ?>">
+                                    <input type="hidden" name="series_id" value="<?php echo $season->show->tvdb_series_id; ?>">
+                                    <input type="submit" value="Update Series" class="xsmall black nice button radius " name="update-series" />
+                                            
+                                </form>
 				<?php
 				}
 				?>

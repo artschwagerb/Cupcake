@@ -16,7 +16,7 @@
 			$this->id = $id;
 			
 			$dbstuff = new databee();
-			$res = $dbstuff->query("SELECT * FROM u_user WHERE id=".$id.";");
+			$res = $dbstuff->query("SELECT id,username,email,displayname,joinDate,lastDate,status_id,last_ip,premium_ex_date FROM u_user WHERE id=".$id.";");
 			if(mysql_num_rows($res) != 0){
 				while($row = mysql_fetch_assoc($res)) {
 					$this->username = $row['username'];
@@ -109,7 +109,7 @@
 		
 		public function getAll() {
 			$dbstuff = new databee();
-			$res = $dbstuff->query("SELECT * FROM u_user;");
+			$res = $dbstuff->query("SELECT id FROM u_user;");
 			if(mysql_num_rows($res) != 0){
 				while($row = mysql_fetch_assoc($res)) {
 					$user = new user($row['id']);
@@ -228,4 +228,3 @@
 	//echo $user->name;
 	
 ?>
-		

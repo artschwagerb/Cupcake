@@ -20,6 +20,19 @@ include "config.php";
 include TEMPLATE_PATH."/header.php";
 // End of Include the important stuff-###############################################################################################
 
+//Process update-series form-###############################################################################################
+if (!empty($_POST['update-series'])) {
+        ?>
+        <script type='text/javascript'> $(document).ready(function() { $('#update_Series_Modal').reveal(); }); </script>
+        <div id="update_Series_Modal" class="reveal-modal">
+            <?php include(SITE_PATH.'get_tv_info_new.php?series_id='.$_POST['series_id'].'&auth_id='.$_POST['auth_id']); ?>
+            <a class="close-reveal-modal">&#215;</a>
+            
+        </div>
+        <?php
+}
+//End of update-series form-###############################################################################################
+
 //Process add-user form-###############################################################################################
 if (!empty($_POST['add-user'])) {
         $admin = new admin();
@@ -104,15 +117,15 @@ $stats = new statistics();
 				</li>
 				<li id="databaseTab">
                                     <fieldset>
-					<form name="seriesscript" action="get_tv_info.php" method="get" class="nice">
+					<form name="seriesscript" method="post" class="nice">
                                             
 							<h5>Add/Update a Series</h5>
 							<p>Wish you could type less and get more?</p>
-							<input type="hidden" name="authid" value="<?php echo $fgmembersite->UserID(); ?>">
+							<input type="hidden" name="auth_id" value="<?php echo $fgmembersite->UserID(); ?>">
 						
 							<label>Series ID</label>
-							<input type="text" name="id" class="input-text">
-							<input type="submit" value="Submit" />
+							<input type="text" name="series_id" class="input-text">
+							<input type="submit" value="Submit" name="update-series" />
                                             
 					</form>
                                    </fieldset>

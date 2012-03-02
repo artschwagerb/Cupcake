@@ -92,57 +92,62 @@ require_once("./include/membersite_config.php");
 		}
 		
 		public function getEpisodes($premium) {
+                        
+                    
+                    
 			$dbstuff = new databee();
 			if (!$premium){
-			$res = $dbstuff->query("SELECT tvdb_episode_id FROM v_episode WHERE tvdb_season_id=".$this->tvdb_season_id." ORDER BY number LIMIT 5;");
+			$res = $dbstuff->query("SELECT tvdb_episode_id FROM v_episode WHERE tvdb_season_id=".$this->tvdb_season_id." AND server_name='localhost' ORDER BY number LIMIT 5;");
 			} else {
 			$res = $dbstuff->query("SELECT tvdb_episode_id FROM v_episode WHERE tvdb_season_id=".$this->tvdb_season_id." ORDER BY number;");
 			}
+                        
 			if(mysql_num_rows($res) != 0){
 				while($row = mysql_fetch_assoc($res)) {
-					$episode = new episode($row['tvdb_episode_id']);
+                                    
+                                    $episode = new episode($row['tvdb_episode_id']);
 				
-				if(file_exists($episode->filename)) {
-				//Only display episodes that have been uploaded/exist
-					?>					
-					<div class="row">
-						<div style="vertical-align: middle; ">
-							<div class="one column">
-									<p><?php echo $episode->number; ?></p>
-							</div>
-							<div class="five columns">
-									<p><a href="player.php?id=<?php echo $episode->tvdb_episode_id; ?>"><?php echo $episode->name; ?></a></p>
-							</div>
-							<div class="two columns">
-									<div class="hide-on-desktops"><p><a class="xsmall white nice button radius" href="player.php?id=<?php echo $episode->tvdb_episode_id; ?>">WATCH</a></p></div>
-							</div>
-                                                        <div class="one column">
-                                                            <?php
-                                                            if($episode->check_Viewed() == true){
-                                                                echo '<p style="vertical-align: middle; margin-top: 4px;"><img src="images/eye-icon.png" title="Previously Watched" /></p>';
-                                                            }
-                                                            ?>
-                                                        </div>
-							<div class="two columns">
-									<div class="rating"><div class="cover"></div><div class="progress" style="width: <?php echo $episode->rating*10; ?>%;"></div></div>
-							</div>
-							<div class="one column">
-									<p><a class="xsmall white nice button radius" href="javascript:;" onmousedown="toggleDiv('description-spoiler-<?php echo $episode->tvdb_episode_id; ?>',this);">v</a></p>
-							</div>
-						</div>
-					</div>
-					<div id="description-spoiler-<?php echo $episode->tvdb_episode_id; ?>" style="display: none; " class="row">
-						<div class="twelve columns">
-							<div class="panel">
-								<p><?php echo $episode->description; ?></p>
-							</div>
-						</div>
-					</div>
-						
-					<?php
-				}
-			
-			}
+                                    if($episode->server != "notfound") {
+                                    //Only display episodes that have been uploaded/exist
+                                            ?>					
+                                            <div class="row">
+                                                    <div style="vertical-align: middle; ">
+                                                            <div class="one column">
+                                                                            <p><?php echo $episode->number; ?></p>
+                                                            </div>
+                                                            <div class="five columns">
+                                                                            <p><a href="player.php?id=<?php echo $episode->tvdb_episode_id; ?>"><?php echo $episode->name; ?></a></p>
+                                                            </div>
+                                                            <div class="two columns">
+                                                                            <div class="hide-on-desktops"><p><a class="xsmall white nice button radius" href="player.php?id=<?php echo $episode->tvdb_episode_id; ?>">WATCH</a></p></div>
+                                                            </div>
+                                                            <div class="one column">
+                                                                <?php
+                                                                if($episode->check_Viewed() == true){
+                                                                    echo '<p style="vertical-align: middle; margin-top: 4px;"><img src="images/eye-icon.png" title="Previously Watched" /></p>';
+                                                                }
+                                                                ?>
+                                                            </div>
+                                                            <div class="two columns">
+                                                                    <div class="rating"><div class="cover"></div><div class="progress" style='width: <?php echo $episode->rating*10 . "%"; ?>;'></div></div>
+                                                            </div>
+                                                            <div class="one column">
+                                                                            <p><a class="xsmall white nice button radius" href="javascript:;" onmousedown="toggleDiv('description-spoiler-<?php echo $episode->tvdb_episode_id; ?>',this);">v</a></p>
+                                                            </div>
+                                                    </div>
+                                            </div>
+                                            <div id="description-spoiler-<?php echo $episode->tvdb_episode_id; ?>" style="display: none; " class="row">
+                                                    <div class="twelve columns">
+                                                            <div class="panel">
+                                                                    <p><?php echo $episode->description; ?></p>
+                                                            </div>
+                                                    </div>
+                                            </div>
+
+                                            <?php
+                                    }
+
+                            }
 				if(!$premium){
 				echo '<span class="red label">Non-Premium Accounts are Limited to 5 Episodes...</span>';
 				}

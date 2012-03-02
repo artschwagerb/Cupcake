@@ -134,15 +134,33 @@ if (!empty($_POST['report-problem'])) {
 					</div>
 				</div>
 				<div class="row">
-					<center>
-						<div class="video-js-box vim-css">
-							<video id="episodeplayer" preload="auto" class="video-js" width="624" height="352" controls preload>
-							  <source src="<?php echo $episode->filename;?>" type='video/mp4; codecs="avc1.42E01E, mp4a.40.2"' />
-								<!-- Image Fallback. Typically the same as the poster image. -->
-							</video>
-					    
-                                                </div>
-                                        </center>
+                                    <center>
+                                    <?php
+                                        echo "Server: '".$episode->server."'";
+                                        if($episode->server == "notfound" || $episode->server == 'localhost'){
+                                            if(!file_exists($episode->filename)){
+                                            echo "<p>Unable to find Episode</p>";
+                                            $episode->get_Server();
+                                            }else{
+                                            echo "Found it";
+                                            }
+                                        }else{
+                                            if($episode->server != ''){
+                                                echo "Video Provided by " . $episode->server;
+                                            }
+                                            
+                                    ?>      
+                                            <div class="video-js-box vim-css">
+                                                    <video id="episodeplayer" preload="auto" class="video-js" width="624" height="352" controls preload>
+                                                        <source src="<?php echo $episode->server.$episode->filename;?>" type='video/mp4; codecs="avc1.42E01E, mp4a.40.2"' />
+                                                            <!-- Image Fallback. Typically the same as the poster image. -->
+                                                    </video>
+
+                                            </div>
+                                    <?php
+                                        }
+                                    ?>
+                                    </center>
 				</div>
 				<br />
 				<div class="row">

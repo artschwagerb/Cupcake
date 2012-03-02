@@ -17,7 +17,7 @@
 	left: 0px;
 	width: 91px;
 	height: 17px;
-	z-index: 101;
+	z-index: -1;
 }
 .rating .progress {
 	position: absolute;
@@ -25,7 +25,7 @@
 	top: 0px;
 	left: 0px;
 	height: 17px;
-	z-index: 102;
+	z-index: -1;
 }
 /* -----------------------------------------
    Movie Images
