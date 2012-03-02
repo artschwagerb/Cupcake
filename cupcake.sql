@@ -1,13 +1,14 @@
 -- phpMyAdmin SQL Dump
--- version 3.3.7deb7
+-- version 3.4.7
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Generation Time: Feb 27, 2012 at 01:19 PM
--- Server version: 5.1.49
--- PHP Version: 5.3.3-7+squeeze8
+-- Generation Time: Mar 02, 2012 at 11:57 AM
+-- Server version: 5.5.17
+-- PHP Version: 5.3.8
 
 SET SQL_MODE="NO_AUTO_VALUE_ON_ZERO";
+SET time_zone = "+00:00";
 
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
@@ -18,6 +19,20 @@ SET SQL_MODE="NO_AUTO_VALUE_ON_ZERO";
 --
 -- Database: `cupcake`
 --
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `api_server`
+--
+
+CREATE TABLE IF NOT EXISTS `api_server` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `address` text NOT NULL,
+  `api_key` text NOT NULL,
+  `status_id` int(11) NOT NULL DEFAULT '1',
+  UNIQUE KEY `id` (`id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
 
@@ -37,11 +52,6 @@ CREATE TABLE IF NOT EXISTS `c_comment` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=latin1;
 
---
--- Dumping data for table `c_comment`
---
-
-
 -- --------------------------------------------------------
 
 --
@@ -56,11 +66,6 @@ CREATE TABLE IF NOT EXISTS `c_reported` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=latin1;
 
---
--- Dumping data for table `c_reported`
---
-
-
 -- --------------------------------------------------------
 
 --
@@ -74,11 +79,6 @@ CREATE TABLE IF NOT EXISTS `c_status` (
   `active` int(11) NOT NULL DEFAULT '1',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=latin1;
-
---
--- Dumping data for table `c_status`
---
-
 
 -- --------------------------------------------------------
 
@@ -96,11 +96,6 @@ CREATE TABLE IF NOT EXISTS `c_topic` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=latin1;
 
---
--- Dumping data for table `c_topic`
---
-
-
 -- --------------------------------------------------------
 
 --
@@ -116,11 +111,6 @@ CREATE TABLE IF NOT EXISTS `menu` (
   `premium` int(1) NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`)
 ) ENGINE=MyISAM  DEFAULT CHARSET=latin1;
-
---
--- Dumping data for table `menu`
---
-
 
 -- --------------------------------------------------------
 
@@ -140,12 +130,18 @@ CREATE TABLE IF NOT EXISTS `page` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=latin1;
 
+-- --------------------------------------------------------
+
 --
--- Dumping data for table `page`
+-- Table structure for table `server`
 --
 
-INSERT INTO `page` (`id`, `user_id`, `status_id`, `date_modified`, `title`, `body`, `sidebar`, `permission_level`) VALUES
-(1, 1, 1, '2012-02-27 13:14:57', '', 'LOL, HOMEPAGE GO', '', 1);
+CREATE TABLE IF NOT EXISTS `server` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `address` text NOT NULL,
+  `status_id` int(11) NOT NULL DEFAULT '1',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
 
@@ -162,11 +158,6 @@ CREATE TABLE IF NOT EXISTS `u_activity` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=latin1;
 
---
--- Dumping data for table `u_activity`
---
-
-
 -- --------------------------------------------------------
 
 --
@@ -180,11 +171,6 @@ CREATE TABLE IF NOT EXISTS `u_premium` (
   `date_expires` datetime NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-
---
--- Dumping data for table `u_premium`
---
-
 
 -- --------------------------------------------------------
 
@@ -208,13 +194,6 @@ CREATE TABLE IF NOT EXISTS `u_user` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=latin1;
 
---
--- Dumping data for table `u_user`
---
-
-INSERT INTO `u_user` (`id`, `name`, `email`, `username`, `password`, `confirmcode`, `joinDate`, `lastDate`, `displayname`, `status_id`, `last_ip`, `premium_ex_date`) VALUES
-(1, 'admin', '', 'admin', 'e229dca52dbfa50c12f80f746c8d6867', 'y', '2012-02-27 13:14:31', '0000-00-00 00:00:00', 'Administrator', 9, '', '0000-00-00 00:00:00');
-
 -- --------------------------------------------------------
 
 --
@@ -235,13 +214,33 @@ CREATE TABLE IF NOT EXISTS `v_episode` (
   `tvdb_season_id` int(11) NOT NULL DEFAULT '0',
   `tvdb_series_id` int(11) NOT NULL DEFAULT '0',
   `date_aired` text NOT NULL,
+  `server_name` text NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=latin1;
 
+-- --------------------------------------------------------
+
 --
--- Dumping data for table `v_episode`
+-- Table structure for table `v_episode_test`
 --
 
+CREATE TABLE IF NOT EXISTS `v_episode_test` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `author_id` int(11) NOT NULL DEFAULT '1',
+  `name` text NOT NULL,
+  `number` int(11) NOT NULL,
+  `description` text NOT NULL,
+  `active` int(11) NOT NULL DEFAULT '1',
+  `hits` int(11) NOT NULL DEFAULT '0',
+  `date_added` date NOT NULL,
+  `rating` text NOT NULL,
+  `tvdb_episode_id` int(11) NOT NULL DEFAULT '0',
+  `tvdb_season_id` int(11) NOT NULL DEFAULT '0',
+  `tvdb_series_id` int(11) NOT NULL DEFAULT '0',
+  `date_aired` text NOT NULL,
+  `server_id` int(11) NOT NULL DEFAULT '1',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
 
@@ -263,11 +262,6 @@ CREATE TABLE IF NOT EXISTS `v_movie` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=latin1;
 
---
--- Dumping data for table `v_movie`
---
-
-
 -- --------------------------------------------------------
 
 --
@@ -285,11 +279,6 @@ CREATE TABLE IF NOT EXISTS `v_season` (
   `tvdb_series_id` int(11) NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=latin1;
-
---
--- Dumping data for table `v_season`
---
-
 
 -- --------------------------------------------------------
 
@@ -318,7 +307,6 @@ CREATE TABLE IF NOT EXISTS `v_show` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=latin1;
 
---
--- Dumping data for table `v_show`
---
-
+/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
+/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
+/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
